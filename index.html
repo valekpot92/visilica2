@@ -20,7 +20,7 @@ html,body{
 .player-card.active{border-color:#ffcc44;box-shadow:0 0 20px rgba(255,204,68,.5);transform:translateY(-1px)}
 .player-card.active.me{border-color:#44ff99;box-shadow:0 0 20px rgba(68,255,153,.55)}
 .pname{font-size:11px;opacity:.85;margin-bottom:2px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pscore{font-size:14px;letter-spacing:1px;line-height:1;white-space:nowrap;overflow:hidden}
+.pscore{font-size:12px;letter-spacing:0;line-height:1.2;white-space:nowrap;overflow:hidden}
 
 .turn-badge{position:absolute;top:6px;left:50%;transform:translateX(-50%);padding:6px 16px;background:rgba(15,8,32,.92);border-radius:20px;font-size:11px;font-weight:800;border:2px solid #44ff99;box-shadow:0 0 16px rgba(68,255,153,.45);z-index:15;transition:all .3s;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;pointer-events:none}
 .turn-badge.opp{border-color:#ff5577;box-shadow:0 0 16px rgba(255,85,119,.45)}
@@ -85,7 +85,7 @@ html,body{
   .keyboard-panel{gap:8px;padding:8px 10px}
   .status-msg{font-size:14px;padding:9px 20px;min-height:38px}
   .pname{font-size:12px}
-  .pscore{font-size:16px}
+  .pscore{font-size:14px}
   .player-card{padding:8px 14px}
   .turn-badge{font-size:12px;padding:7px 18px;top:10px}
   .top-bar{padding:8px 12px 6px;gap:10px}
@@ -101,14 +101,14 @@ html,body{
   .keyboard{gap:2px;padding:5px}
   .status-msg{font-size:11px;padding:6px 12px;min-height:28px}
   .pname{font-size:10px}
-  .pscore{font-size:13px}
+  .pscore{font-size:10px}
   .turn-badge{font-size:10px;padding:5px 12px}
   .word-lbl{font-size:7px}
 }
 @media (max-height:500px) and (orientation:landscape){
   .top-bar{padding:4px 8px}
   .player-card{padding:4px 10px}
-  .pscore{font-size:12px}
+  .pscore{font-size:10px}
   .pname{font-size:10px}
   .status-msg{font-size:11px;padding:5px 12px;min-height:26px}
   .lbox{width:26px;height:32px;font-size:14px}
@@ -121,11 +121,11 @@ html,body{
 <div class="top-bar">
   <div class="player-card me" id="p1i">
     <div class="pname" id="p1n">Вы</div>
-    <div class="pscore" id="p1s">❤️❤️❤️❤️❤️</div>
+    <div class="pscore" id="p1s">❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️</div>
   </div>
   <div class="player-card" id="p2i">
     <div class="pname" id="p2n">Соперник</div>
-    <div class="pscore" id="p2s">❤️❤️❤️❤️❤️</div>
+    <div class="pscore" id="p2s">❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️</div>
   </div>
 </div>
 
@@ -158,7 +158,7 @@ html,body{
 <div class="modal" id="menu">
   <div class="mc">
     <h1>🪢 ВИСЕЛИЦА 2D</h1>
-    <p>Мультяшная игра на двоих. Кто первый ошибётся 5 раз — того повесят.</p>
+    <p>Мультяшная игра на двоих. У каждого 10 попыток — анимация казни меняется каждые 2 ошибки. Кто ошибётся 10 раз — того повесят.</p>
     <div class="menu-btns">
       <button class="btn bp" id="bCreate">🎮 Создать игру</button>
       <button class="btn bp" id="bJoin">🔗 Присоединиться</button>
@@ -227,6 +227,18 @@ html,body{
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
 'use strict';
+
+// ============ КОНСТАНТЫ ============
+const MAX_WRONG = 10;      // всего попыток
+const ANIM_STEPS = 5;      // этапов анимации (столб, верёвка, табурет, стража, петля)
+// Каждые 2 ошибки — новый этап. То есть этап = ceil(wrong / 2)
+// wrong 1 → этап 0 (нет анимации)
+// wrong 2 → этап 1 (столб)
+// wrong 4 → этап 2 (верёвка)
+// wrong 6 → этап 3 (табурет)
+// wrong 8 → этап 4 (стража)
+// wrong 10 → этап 5 (повешен)
+function wrongToStep(wrong){return Math.min(ANIM_STEPS, Math.floor(wrong/2));}
 
 // ============ ЗВУК ============
 const Snd={
@@ -783,7 +795,7 @@ class Net{
   host(room,onMessage,onStatus){
     this.room=room;this.isHost=true;this.onMessage=onMessage;this.statusCb=onStatus;
     this.setStatus('Инициализация сервера...','wait');
-    this._initPeer('hangman-2d-v4-'+room);
+    this._initPeer('hangman-2d-v5-'+room);
   }
   join(room,onMessage,onStatus){
     this.room=room;this.isHost=false;this.onMessage=onMessage;this.statusCb=onStatus;
@@ -815,7 +827,7 @@ class Net{
     });
   }
   _connectToHost(){
-    const hostId='hangman-2d-v4-'+this.room;
+    const hostId='hangman-2d-v5-'+this.room;
     this.setStatus('Поиск хоста...','wait');
     this.conn=this.peer.connect(hostId,{reliable:true});
     this._setupConn();
@@ -877,22 +889,6 @@ class Net{
 // ============ ИГРА ============
 const LETTERS='АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'.split('');
 const AI_WORDS=['ПРОГРАММА','КОМПЬЮТЕР','ИНТЕРНЕТ','ТЕЛЕФОН','МОНИТОР','КЛАВИАТУРА','МЫШКА','ПРИНТЕР','НАУШНИКИ','КАМЕРА','ПЛАНШЕТ','НОУТБУК','ХОЛОДИЛЬНИК','МИКРОВОЛНОВКА','ТЕЛЕВИЗОР','ВЕЛОСИПЕД','МАГНИТОФОН'];
-
-// ============================================================
-// ЛОГИКА (после исправления):
-//   guessedMe  — буквы, которые Я угадывал в слове СОПЕРНИКА
-//   guessedOpp — буквы, которые СОПЕРНИК угадывал в МОЁМ слове
-// Эти множества — только для МОЕГО UI.
-//
-// Хост при получении догадки гостя хранит ЕЁ в своём guessedOpp
-// и рассылает через state:
-//   hostGuessed = [...guessedMe]  (буквы хоста в слове гостя)
-//   guestGuessed = [...guessedOpp] (буквы гостя в слове хоста)
-//
-// Гость при получении state ставит:
-//   guessedMe = guestGuessed (что я угадывал)
-//   guessedOpp = hostGuessed (что хост угадывал)
-// ============================================================
 
 const Game={
   mode:'menu',phase:'menu',roomCode:null,isHost:false,
@@ -966,18 +962,21 @@ const Game={
   refreshUI(){
     this.els.p1n.textContent=this.me.name;
     this.els.p2n.textContent=this.opp.name;
-    const h=n=>'❤️'.repeat(Math.max(0,5-n))+'🖤'.repeat(Math.min(5,n));
+    // 10 сердечек: полные = оставшиеся, пустые = потраченные
+    const h=n=>{
+      const lost=Math.min(MAX_WRONG,n);
+      const left=MAX_WRONG-lost;
+      return '❤️'.repeat(left)+'🖤'.repeat(lost);
+    };
     this.els.p1s.textContent=h(this.myWrong);
     this.els.p2s.textContent=h(this.oppWrong);
     this.els.p1i.classList.toggle('active',this.myTurn&&this.phase==='playing');
     this.els.p2i.classList.toggle('active',!this.myTurn&&this.phase==='playing');
     this.renderWord(this.els.oppWord,this.oppWord,this.oppRev,'opp');
     this.renderWord(this.els.myWord,this.myWord,this.myRev,'me');
-    // Клавиши: дизейбл только по МОИМ угаданным буквам
     this.els.kbd.querySelectorAll('.key').forEach(k=>{
       const L=k.dataset.letter;
       k.disabled=!(this.myTurn&&this.phase==='playing')||this.guessedMe.has(L);
-      // Подсветка: зелёный/красный по результату МОЕГО попадания
       k.classList.remove('ok','no');
       if(this.guessedMe.has(L)&&this.oppWord){
         k.classList.add(this.oppWord.includes(L)?'ok':'no');
@@ -1118,16 +1117,12 @@ const Game={
         this.opp.name=msg.name||this.opp.name;
         this.oppWord=msg.word;
         this.oppRev=new Array(msg.word.length).fill(false);
-        // Гость ещё не угадывал в моём слове — обнулим
         this.guessedOpp=new Set();
         this.refreshUI();
         this.checkStart();
         return;
       }
-      if(t==='guess'){
-        this.handleGuestGuess(msg.letter);
-        return;
-      }
+      if(t==='guess'){this.handleGuestGuess(msg.letter);return;}
       if(t==='restart'){this.toMenu();return;}
     } else {
       if(t==='ack')return;
@@ -1144,7 +1139,6 @@ const Game={
         this.opp.name=msg.name||'Хост';
         this.oppWord=msg.word;
         this.oppRev=new Array(msg.word.length).fill(false);
-        // Хост ещё не угадывал в моём слове
         this.guessedOpp=new Set();
         this.refreshUI();
         this.checkStart();
@@ -1156,9 +1150,6 @@ const Game={
     }
   },
 
-  // ---------- ХОСТ: рассылка состояния ----------
-  // hostGuessed = буквы ХОСТА в слове гостя (guessedMe хоста)
-  // guestGuessed = буквы ГОСТЯ в слове хоста (guessedOpp хоста)
   sendState(){
     if(!this.isHost||this.mode!=='online') return;
     this.net.send({
@@ -1178,7 +1169,6 @@ const Game={
     });
   },
 
-  // ---------- ГОСТЬ: применить состояние ----------
   applyState(s){
     const prevMyRev=this.myRev.join('');
     const prevOppRev=this.oppRev.join('');
@@ -1199,8 +1189,6 @@ const Game={
     this.myTurn=(s.turn===2);
     this.phase=s.phase||this.phase;
 
-    // Для гостя: "мои угаданные буквы" = guestGuessed (буквы гостя)
-    //            "буквы хоста в моём слове" = hostGuessed
     this.guessedMe=new Set(s.guestGuessed||[]);
     this.guessedOpp=new Set(s.hostGuessed||[]);
 
@@ -1211,14 +1199,19 @@ const Game={
       this.oppRev=new Array(this.oppWord.length).fill(false);
     }
 
+    // Анимация привязана к wrong → step (каждые 2 ошибки)
     if(prevMyRev!==this.myRev.join('')&&this.myWrong===prevMyWrong) Snd.ok();
     if(this.myWrong>prevMyWrong){
-      Snd.no();Snd.step(this.myWrong-1);
-      if(this.scene)this.scene.setStep('left',this.myWrong);
+      Snd.no();
+      const newStep=wrongToStep(this.myWrong);
+      const oldStep=wrongToStep(prevMyWrong);
+      if(newStep>oldStep){Snd.step(newStep-1);if(this.scene)this.scene.setStep('left',newStep);}
     }
     if(this.oppWrong>prevOppWrong){
       Snd.no();
-      if(this.scene)this.scene.setStep('right',this.oppWrong);
+      const newStep=wrongToStep(this.oppWrong);
+      const oldStep=wrongToStep(prevOppWrong);
+      if(newStep>oldStep){if(this.scene)this.scene.setStep('right',newStep);}
     }
     if(prevOppRev!==this.oppRev.join('')&&this.oppWrong===prevOppWrong) Snd.ok();
 
@@ -1241,17 +1234,16 @@ const Game={
         return;
       }
     }
-    if(this.myWrong>=5){this.phase='ended';this.showResult(this.opp.name,this.me.name);return;}
-    if(this.oppWrong>=5){this.phase='ended';this.showResult(this.me.name,this.opp.name);return;}
+    if(this.myWrong>=MAX_WRONG){this.phase='ended';this.showResult(this.opp.name,this.me.name);return;}
+    if(this.oppWrong>=MAX_WRONG){this.phase='ended';this.showResult(this.me.name,this.opp.name);return;}
   },
 
-  // ---------- ХОСТ: обработка догадки гостя ----------
   handleGuestGuess(letter){
     if(this.phase!=='playing')return;
     if(this.myTurn)return;
     if(this.guessedOpp.has(letter))return;
 
-    this.guessedOpp.add(letter); // запоминаем как "буква соперника"
+    this.guessedOpp.add(letter);
     let found=false;
     for(let i=0;i<this.myWord.length;i++){
       if(this.myWord[i]===letter){this.myRev[i]=true;found=true;}
@@ -1267,7 +1259,14 @@ const Game={
       }
     } else {
       this.oppWrong++;
-      if(this.oppWrong>=5){
+      // Анимация каждые 2 ошибки
+      const newStep=wrongToStep(this.oppWrong);
+      const oldStep=wrongToStep(this.oppWrong-1);
+      if(newStep>oldStep){
+        Snd.step(newStep-1);
+        if(this.scene)this.scene.setStep('right',newStep);
+      }
+      if(this.oppWrong>=MAX_WRONG){
         this.phase='ended';
         this.sendState();
         this.net.send({type:'gameover',winnerName:this.me.name,loserName:this.opp.name});
@@ -1283,13 +1282,11 @@ const Game={
       Snd.ok();
       this.setStatus('Соперник угадал букву "'+letter+'"');
     } else {
-      Snd.no();Snd.step(this.oppWrong-1);
-      if(this.scene)this.scene.setStep('right',this.oppWrong);
+      Snd.no();
       this.setStatus('Соперник не угадал букву "'+letter+'" — ваш ход!');
     }
   },
 
-  // ---------- ОТПРАВКА СЛОВА ----------
   submitWord(){
     const val=this.els.wordIn.value.trim().toUpperCase();
     if(!val||!/^[А-ЯЁ]+$/.test(val)){this.els.wErr.textContent='Только русские буквы!';this.els.wErr.style.display='block';return;}
@@ -1303,7 +1300,6 @@ const Game={
     if(this.mode==='ai'){this.startAIPlaying();return;}
     if(this.isHost){this.checkStart();return;}
 
-    // Гость отправляет слово хосту
     this.net.send({type:'word',word:val,name:this.me.name});
     this.setStatus('Слово принято. Ожидание хоста...');
     this.els.rminfo.textContent='Код: '+this.roomCode+' — ждём хоста';
@@ -1331,7 +1327,6 @@ const Game={
     this.refreshUI();
   },
 
-  // ---------- ХОД ----------
   onLetter(letter){
     if(this.phase!=='playing')return;
     if(!this.myTurn)return;
@@ -1339,7 +1334,6 @@ const Game={
     if(!this.oppWord)return;
     Snd.init();
 
-    // Гость → отправляет guess хосту
     if(this.mode==='online'&&!this.isHost){
       this.guessedMe.add(letter);
       const key=this.els.kbd.querySelector('[data-letter="'+letter+'"]');
@@ -1352,7 +1346,6 @@ const Game={
       return;
     }
 
-    // Хост или ИИ — локально
     this.guessedMe.add(letter);
     const key=this.els.kbd.querySelector('[data-letter="'+letter+'"]');
     let found=false;
@@ -1374,11 +1367,16 @@ const Game={
       Snd.no();
       if(key)key.classList.add('no');
       this.myWrong++;
-      this.setStatus('❌ Буквы "'+letter+'" нет! ('+this.myWrong+'/5)');
-      if(this.scene)this.scene.setStep('left',this.myWrong);
-      Snd.step(this.myWrong-1);
+      // Анимация каждые 2 ошибки
+      const newStep=wrongToStep(this.myWrong);
+      const oldStep=wrongToStep(this.myWrong-1);
+      if(newStep>oldStep){
+        Snd.step(newStep-1);
+        if(this.scene)this.scene.setStep('left',newStep);
+      }
+      this.setStatus('❌ Буквы "'+letter+'" нет! ('+this.myWrong+'/'+MAX_WRONG+')');
       this.refreshUI();
-      if(this.myWrong>=5){
+      if(this.myWrong>=MAX_WRONG){
         this.gameOverHost(this.opp.name,this.me.name);
         return;
       }
@@ -1436,11 +1434,13 @@ const Game={
         this.aiTurn();
       } else {
         this.oppWrong++;
+        const newStep=wrongToStep(this.oppWrong);
+        const oldStep=wrongToStep(this.oppWrong-1);
+        if(newStep>oldStep){if(this.scene)this.scene.setStep('right',newStep);}
         Snd.no();
         this.setStatus('Компьютер не угадал букву "'+choice+'"');
-        if(this.scene)this.scene.setStep('right',this.oppWrong);
         this.refreshUI();
-        if(this.oppWrong>=5){
+        if(this.oppWrong>=MAX_WRONG){
           this.gameOverHost(this.me.name,this.opp.name);
           return;
         }
