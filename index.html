@@ -13,187 +13,71 @@ html,body{
   touch-action:manipulation;
   position:fixed;inset:0;
 }
+#game{position:relative;width:100%;height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
 
-#game{
-  position:relative;
-  width:100%;
-  height:100vh;
-  height:100dvh;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-}
-
-/* ===== ВЕРХНЯЯ ПАНЕЛЬ ===== */
-.top-bar{
-  position:relative;z-index:10;
-  display:flex;justify-content:space-between;gap:6px;
-  padding:6px 8px 4px;flex-wrap:nowrap;
-  flex:0 0 auto;
-  pointer-events:none;
-}
-.player-card{
-  background:rgba(15,8,32,.85);
-  backdrop-filter:blur(14px);
-  padding:6px 12px;border-radius:12px;
-  border:2px solid rgba(255,255,255,.15);
-  min-width:0;flex:1 1 0;max-width:38%;
-  transition:all .35s;
-  box-shadow:0 4px 16px rgba(0,0,0,.4);
-  pointer-events:auto;
-  overflow:hidden;
-}
+.top-bar{position:relative;z-index:10;display:flex;justify-content:space-between;gap:6px;padding:6px 8px 4px;flex-wrap:nowrap;flex:0 0 auto;pointer-events:none}
+.player-card{background:rgba(15,8,32,.85);backdrop-filter:blur(14px);padding:6px 12px;border-radius:12px;border:2px solid rgba(255,255,255,.15);min-width:0;flex:1 1 0;max-width:38%;transition:all .35s;box-shadow:0 4px 16px rgba(0,0,0,.4);pointer-events:auto;overflow:hidden}
 .player-card.active{border-color:#ffcc44;box-shadow:0 0 20px rgba(255,204,68,.5);transform:translateY(-1px)}
 .player-card.active.me{border-color:#44ff99;box-shadow:0 0 20px rgba(68,255,153,.55)}
 .pname{font-size:11px;opacity:.85;margin-bottom:2px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pscore{font-size:14px;letter-spacing:1px;line-height:1;white-space:nowrap;overflow:hidden}
 
-.turn-badge{
-  position:absolute;top:6px;left:50%;transform:translateX(-50%);
-  padding:6px 16px;background:rgba(15,8,32,.92);
-  border-radius:20px;font-size:11px;font-weight:800;
-  border:2px solid #44ff99;
-  box-shadow:0 0 16px rgba(68,255,153,.45);
-  z-index:15;transition:all .3s;
-  letter-spacing:.5px;text-transform:uppercase;
-  white-space:nowrap;pointer-events:none;
-}
+.turn-badge{position:absolute;top:6px;left:50%;transform:translateX(-50%);padding:6px 16px;background:rgba(15,8,32,.92);border-radius:20px;font-size:11px;font-weight:800;border:2px solid #44ff99;box-shadow:0 0 16px rgba(68,255,153,.45);z-index:15;transition:all .3s;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;pointer-events:none}
 .turn-badge.opp{border-color:#ff5577;box-shadow:0 0 16px rgba(255,85,119,.45)}
 
-/* ===== СЦЕНА ===== */
-.stage{
-  position:relative;
-  flex:1 1 auto;
-  min-height:0;
-  display:flex;
-  flex-direction:column;
-}
-.canvas-wrap{
-  position:relative;
-  flex:1 1 auto;
-  min-height:0;
-  display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
-}
+.stage{position:relative;flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+.canvas-wrap{position:relative;flex:1 1 auto;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
 #scene{width:100%;height:100%;display:block}
 
-.words-overlay{
-  position:absolute;top:44%;left:50%;
-  transform:translate(-50%,-50%);
-  pointer-events:none;z-index:8;
-  display:flex;flex-direction:column;gap:6px;align-items:center;
-  width:100%;padding:0 6px;
-}
+.words-overlay{position:absolute;top:44%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:8;display:flex;flex-direction:column;gap:6px;align-items:center;width:100%;padding:0 6px}
 .word-block{text-align:center;max-width:100%}
 .word-lbl{font-size:8px;opacity:.75;margin-bottom:3px;letter-spacing:1px;text-transform:uppercase;font-weight:600;text-shadow:0 2px 6px #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .word-row{display:flex;gap:3px;justify-content:center;flex-wrap:wrap}
-
-.lbox{
-  width:34px;height:40px;
-  background:rgba(15,8,32,.88);
-  border:2px solid rgba(255,255,255,.28);
-  border-radius:7px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;font-weight:800;text-transform:uppercase;
-  transition:all .35s cubic-bezier(.34,1.56,.64,1);
-  box-shadow:0 2px 8px rgba(0,0,0,.5);
-  font-family:'Georgia',serif;
-}
+.lbox{width:34px;height:40px;background:rgba(15,8,32,.88);border:2px solid rgba(255,255,255,.28);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;text-transform:uppercase;transition:all .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 2px 8px rgba(0,0,0,.5);font-family:'Georgia',serif}
 .lbox.rev-me{background:linear-gradient(160deg,#2a7a55,#1a4a35);border-color:#44ff99;box-shadow:0 0 14px rgba(68,255,153,.55),inset 0 0 10px rgba(68,255,153,.2)}
 .lbox.rev-opp{background:linear-gradient(160deg,#7a2a45,#4a1a2a);border-color:#ff5577;box-shadow:0 0 14px rgba(255,85,119,.55),inset 0 0 10px rgba(255,85,119,.2)}
 .lbox.empty{background:transparent;border-color:transparent;box-shadow:none}
 
-/* ===== КЛАВИАТУРА ===== */
-.keyboard-panel{
-  position:relative;z-index:10;
-  padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));
-  display:flex;flex-direction:column;gap:6px;align-items:center;
-  flex:0 0 auto;
-  background:linear-gradient(180deg,transparent,#0d0a1a 30%);
-}
-.status-msg{
-  font-size:12px;text-align:center;
-  padding:7px 16px;border-radius:10px;
-  background:rgba(15,8,32,.9);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,.12);
-  min-height:32px;display:flex;align-items:center;justify-content:center;
-  max-width:96vw;font-weight:600;
-  box-shadow:0 4px 14px rgba(0,0,0,.4);
-  line-height:1.2;
-}
-.keyboard{
-  display:grid;
-  grid-template-columns:repeat(11,1fr);
-  gap:3px;
-  width:100%;
-  max-width:640px;
-  padding:6px;border-radius:12px;
-  background:rgba(15,8,32,.75);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,.08);
-  box-shadow:0 6px 20px rgba(0,0,0,.4);
-}
-.key{
-  aspect-ratio:1/1.08;
-  width:100%;
-  background:linear-gradient(160deg,#3a2a5a,#241640);
-  border:1.5px solid rgba(255,255,255,.15);
-  border-radius:6px;color:#fff;
-  font-size:14px;font-weight:700;cursor:pointer;
-  transition:all .12s;display:flex;
-  align-items:center;justify-content:center;
-  text-transform:uppercase;font-family:inherit;
-  box-shadow:0 2px 0 rgba(0,0,0,.4);
-  padding:0;
-  line-height:1;
-}
+.keyboard-panel{position:relative;z-index:10;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:6px;align-items:center;flex:0 0 auto;background:linear-gradient(180deg,transparent,#0d0a1a 30%)}
+.status-msg{font-size:12px;text-align:center;padding:7px 16px;border-radius:10px;background:rgba(15,8,32,.9);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12);min-height:32px;display:flex;align-items:center;justify-content:center;max-width:96vw;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.4);line-height:1.2}
+.keyboard{display:grid;grid-template-columns:repeat(11,1fr);gap:3px;width:100%;max-width:640px;padding:6px;border-radius:12px;background:rgba(15,8,32,.75);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08);box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.key{aspect-ratio:1/1.08;width:100%;background:linear-gradient(160deg,#3a2a5a,#241640);border:1.5px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;transition:all .12s;display:flex;align-items:center;justify-content:center;text-transform:uppercase;font-family:inherit;box-shadow:0 2px 0 rgba(0,0,0,.4);padding:0;line-height:1}
 .key:hover:not(:disabled){border-color:#ffcc44;transform:translateY(-1px)}
 .key:active:not(:disabled){transform:translateY(1px);box-shadow:0 1px 0 rgba(0,0,0,.4)}
 .key:disabled{opacity:.25;cursor:not-allowed;transform:none}
 .key.ok{background:linear-gradient(160deg,#2a9a55,#1a6a35);border-color:#66ffaa;box-shadow:0 0 10px rgba(102,255,170,.4)}
 .key.no{background:linear-gradient(160deg,#b83333,#7a1a1a);border-color:#ff6666;box-shadow:0 0 10px rgba(255,102,102,.4)}
 
-/* ===== МОДАЛКИ ===== */
 .modal{position:fixed;inset:0;z-index:100;background:rgba(10,5,20,.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:12px;animation:fadeIn .25s ease;overflow-y:auto}
 .modal.hide{display:none}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.mc{
-  background:linear-gradient(165deg,#2a1a4a,#1a0f2e);
-  padding:20px 18px;border-radius:16px;
-  border:2px solid rgba(255,204,68,.25);
-  max-width:400px;width:100%;text-align:center;
-  box-shadow:0 20px 50px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.1);
-  animation:pop .3s cubic-bezier(.34,1.56,.64,1);
-  margin:auto;
-}
+.mc{background:linear-gradient(165deg,#2a1a4a,#1a0f2e);padding:20px 18px;border-radius:16px;border:2px solid rgba(255,204,68,.25);max-width:400px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.1);animation:pop .3s cubic-bezier(.34,1.56,.64,1);margin:auto}
 @keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
 .mc h1{font-size:22px;margin-bottom:10px;background:linear-gradient(90deg,#ffcc44,#ff6688,#66ccff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-family:'Georgia',serif;letter-spacing:1px}
 .mc h2{font-size:18px;margin-bottom:10px;color:#ffcc44;font-family:'Georgia',serif}
 .mc p{margin-bottom:14px;opacity:.85;line-height:1.5;font-size:13px}
-
 .btn{padding:11px 20px;font-size:13px;font-weight:800;border:none;border-radius:10px;cursor:pointer;transition:all .2s;margin:4px;text-transform:uppercase;letter-spacing:1px;font-family:inherit;box-shadow:0 3px 0 rgba(0,0,0,.35),0 5px 14px rgba(0,0,0,.35)}
 .btn:hover{transform:translateY(-2px)}
 .btn:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(0,0,0,.35)}
 .bp{background:linear-gradient(160deg,#44ff99,#22aa66);color:#0a2018}
 .bs{background:linear-gradient(160deg,#5a4a7a,#3a2a5a);color:#fff}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-
 .menu-btns{display:flex;flex-direction:column;gap:8px;margin-top:14px}
-
 .ig{margin-bottom:10px;text-align:left}
 .ig label{display:block;margin-bottom:4px;font-size:11px;opacity:.8;letter-spacing:.5px;font-weight:600;text-transform:uppercase}
 .ig input{width:100%;padding:10px 12px;font-size:15px;border:2px solid rgba(255,255,255,.15);border-radius:9px;background:rgba(0,0,0,.35);color:#fff;outline:none;transition:border-color .3s;font-family:inherit}
 .ig input:focus{border-color:#ffcc44;box-shadow:0 0 12px rgba(255,204,68,.25)}
-
 .code{font-size:24px;font-weight:800;letter-spacing:5px;color:#ffcc44;text-shadow:0 0 20px rgba(255,204,68,.5);margin:12px 0;padding:10px;background:rgba(0,0,0,.35);border-radius:10px;font-family:'Courier New',monospace;border:1px dashed rgba(255,204,68,.4)}
 .err{color:#ff6666;font-size:12px;margin-bottom:8px;display:none;font-weight:600}
 .rminfo{position:absolute;bottom:4px;right:6px;font-size:9px;opacity:.35;pointer-events:none;z-index:10}
-
 .loader{display:inline-block;width:18px;height:18px;border:3px solid rgba(255,255,255,.2);border-radius:50%;border-top-color:#ffcc44;animation:spin 1s linear infinite;margin-top:10px}
 @keyframes spin{to{transform:rotate(360deg)}}
+.conn-status{position:fixed;top:6px;left:50%;transform:translateX(-50%);font-size:10px;padding:3px 10px;border-radius:10px;background:rgba(0,0,0,.75);z-index:200;pointer-events:none;display:none}
+.conn-status.show{display:block}
+.conn-status.ok{color:#44ff99;border:1px solid #44ff99}
+.conn-status.wait{color:#ffcc44;border:1px solid #ffcc44}
+.conn-status.err{color:#ff6666;border:1px solid #ff6666}
 
-/* ===== ПЛАНШЕТЫ И БОЛЬШИЕ ТЕЛЕФОНЫ ===== */
 @media (min-width:481px){
   .lbox{width:40px;height:46px;font-size:21px}
   .key{font-size:16px}
@@ -211,7 +95,6 @@ html,body{
   .lbox{width:44px;height:52px;font-size:23px}
   .key{font-size:18px}
 }
-/* Очень узкие экраны */
 @media (max-width:360px){
   .lbox{width:28px;height:34px;font-size:15px}
   .key{font-size:12px;border-radius:5px}
@@ -222,7 +105,6 @@ html,body{
   .turn-badge{font-size:10px;padding:5px 12px}
   .word-lbl{font-size:7px}
 }
-/* Ландшафтный режим на телефоне */
 @media (max-height:500px) and (orientation:landscape){
   .top-bar{padding:4px 8px}
   .player-card{padding:4px 10px}
@@ -271,11 +153,12 @@ html,body{
 </div>
 
 <div class="rminfo" id="rminfo"></div>
+<div class="conn-status" id="connStatus"></div>
 
 <div class="modal" id="menu">
   <div class="mc">
     <h1>🪢 ВИСЕЛИЦА 2D</h1>
-    <p>Мультяшная игра на двоих: вы загадываете слово — соперник угадывает, и наоборот. Кто первый ошибётся 5 раз — того повесят.</p>
+    <p>Мультяшная игра на двоих. Кто первый ошибётся 5 раз — того повесят.</p>
     <div class="menu-btns">
       <button class="btn bp" id="bCreate">🎮 Создать игру</button>
       <button class="btn bp" id="bJoin">🔗 Присоединиться</button>
@@ -299,8 +182,9 @@ html,body{
 <div class="modal hide" id="mWait">
   <div class="mc">
     <h2>Ожидание соперника</h2>
-    <p>Откройте игру во второй вкладке этого браузера и введите код, или отправьте ссылку другу:</p>
+    <p>Отправьте код или ссылку другу на другое устройство:</p>
     <div class="code" id="wCode">------</div>
+    <div class="conn-status show wait" id="wStatus" style="position:static;margin:10px auto">Подключение к серверу...</div>
     <button class="btn bp" id="wCopy">📋 Копировать ссылку</button>
     <div class="loader"></div>
     <button class="btn bs" id="wCancel" style="margin-top:14px">Отмена</button>
@@ -340,6 +224,7 @@ html,body{
 </div>
 </div>
 
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
 'use strict';
 
@@ -448,8 +333,6 @@ class Scene2D{
   render(){
     const ctx=this.ctx;
     ctx.clearRect(0,0,this.w,this.h);
-    // Масштаб: рисуем сцену в координатах от -450 до 450 по X (900 юнитов)
-    // и от -400 до 60 по Y
     const scale=Math.min(this.w/860,this.h/440);
     const cx=this.w/2;
     const baseY=this.h*0.86;
@@ -468,7 +351,6 @@ class Scene2D{
   }
 
   drawSky(ctx){
-    // Небо
     const g=ctx.createLinearGradient(0,-600,0,0);
     g.addColorStop(0,'#1a1a3a');
     g.addColorStop(.4,'#3a2a5a');
@@ -477,25 +359,19 @@ class Scene2D{
     ctx.fillStyle=g;
     ctx.fillRect(-500,-600,1000,700);
 
-    // Луна
     const moonX=200,moonY=-300;
     const mg=ctx.createRadialGradient(moonX,moonY,5,moonX,moonY,55);
     mg.addColorStop(0,'#fff8d0');
     mg.addColorStop(.5,'#ffe9a0');
     mg.addColorStop(1,'rgba(255,233,160,0)');
     ctx.fillStyle=mg;
-    ctx.beginPath();
-    ctx.arc(moonX,moonY,55,0,Math.PI*2);
-    ctx.fill();
+    ctx.beginPath();ctx.arc(moonX,moonY,55,0,Math.PI*2);ctx.fill();
     ctx.fillStyle='#fff8d0';
-    ctx.beginPath();
-    ctx.arc(moonX,moonY,24,0,Math.PI*2);
-    ctx.fill();
+    ctx.beginPath();ctx.arc(moonX,moonY,24,0,Math.PI*2);ctx.fill();
     ctx.fillStyle='rgba(220,200,140,.5)';
     ctx.beginPath();ctx.arc(moonX-7,moonY-5,4,0,Math.PI*2);ctx.fill();
     ctx.beginPath();ctx.arc(moonX+6,moonY+3,3,0,Math.PI*2);ctx.fill();
 
-    // Звёзды
     ctx.fillStyle='#fff';
     for(let i=0;i<35;i++){
       const sx=(Math.sin(i*137.5)*0.5+0.5)*900-450;
@@ -509,14 +385,11 @@ class Scene2D{
 
   drawCastle(ctx){
     const cy=-120,ch=180,cx0=-60,cw=460;
-
-    // Стена
     const wg=ctx.createLinearGradient(0,cy,0,cy+ch);
     wg.addColorStop(0,'#4a3a5a');wg.addColorStop(1,'#2a1f3a');
     ctx.fillStyle=wg;
     ctx.fillRect(cx0-cw/2,cy+50,cw,ch-50);
 
-    // Камни
     ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=1;
     for(let y=cy+60;y<cy+ch;y+=12){
       for(let x=cx0-cw/2;x<cx0+cw/2;x+=20){
@@ -525,28 +398,21 @@ class Scene2D{
       }
     }
 
-    // Зубцы
     ctx.fillStyle='#3a2a4a';
-    for(let x=cx0-cw/2;x<cx0+cw/2;x+=24){
-      ctx.fillRect(x,cy+38,14,18);
-    }
+    for(let x=cx0-cw/2;x<cx0+cw/2;x+=24)ctx.fillRect(x,cy+38,14,18);
 
-    // Башни
     this.drawTower(ctx,cx0-cw/2-5,cy-60,50,210);
     this.drawTower(ctx,cx0+cw/2+5,cy-60,50,210);
     this.drawTower(ctx,cx0,cy-90,70,250);
 
-    // Ворота
     ctx.fillStyle='#1a0f2a';
     ctx.beginPath();
     ctx.moveTo(cx0-24,cy+ch);
     ctx.lineTo(cx0-24,cy+120);
     ctx.quadraticCurveTo(cx0,cy+90,cx0+24,cy+120);
     ctx.lineTo(cx0+24,cy+ch);
-    ctx.closePath();
-    ctx.fill();
+    ctx.closePath();ctx.fill();
 
-    // Окна
     ctx.fillStyle='#ffcc55';
     const wins=[[-160,cy+80,7,10],[-120,cy+90,5,8],[90,cy+75,7,10],[140,cy+85,5,8]];
     wins.forEach(w=>{
@@ -561,10 +427,8 @@ class Scene2D{
     g.addColorStop(0,'#3a2a4a');g.addColorStop(.5,'#5a4a6a');g.addColorStop(1,'#3a2a4a');
     ctx.fillStyle=g;
     ctx.fillRect(x-w/2,y,w,h);
-
     ctx.fillStyle='#2a1f3a';
     for(let i=0;i<3;i++)ctx.fillRect(x-w/2+i*(w/3),y-12,w/4.5,14);
-
     ctx.strokeStyle='rgba(0,0,0,.35)';ctx.lineWidth=1;
     for(let yy=y;yy<y+h;yy+=11){
       for(let xx=x-w/2;xx<x+w/2;xx+=14){
@@ -572,25 +436,17 @@ class Scene2D{
         ctx.strokeRect(xx+off,yy,14,11);
       }
     }
-
     ctx.fillStyle='#ffcc55';
     ctx.fillRect(x-3,y+25,6,10);
     ctx.fillRect(x-3,y+70,6,10);
-
     ctx.fillStyle='#2a1f3a';
     ctx.beginPath();
-    ctx.moveTo(x-w/2-6,y);
-    ctx.lineTo(x,y-26);
-    ctx.lineTo(x+w/2+6,y);
-    ctx.closePath();
-    ctx.fill();
-
+    ctx.moveTo(x-w/2-6,y);ctx.lineTo(x,y-26);ctx.lineTo(x+w/2+6,y);
+    ctx.closePath();ctx.fill();
     ctx.strokeStyle='#8B5A2B';ctx.lineWidth=2;
     ctx.beginPath();ctx.moveTo(x,y-26);ctx.lineTo(x,y-48);ctx.stroke();
     ctx.fillStyle='#cc3333';
-    ctx.beginPath();
-    ctx.moveTo(x,y-48);ctx.lineTo(x+18,y-43);ctx.lineTo(x,y-38);
-    ctx.closePath();ctx.fill();
+    ctx.beginPath();ctx.moveTo(x,y-48);ctx.lineTo(x+18,y-43);ctx.lineTo(x,y-38);ctx.closePath();ctx.fill();
   }
 
   drawTown(ctx){
@@ -604,23 +460,17 @@ class Scene2D{
       ctx.fillRect(h.x,gl-h.h,h.w,h.h);
       ctx.fillStyle='#3a2a3a';
       ctx.beginPath();
-      ctx.moveTo(h.x-4,gl-h.h);
-      ctx.lineTo(h.x+h.w/2,gl-h.h-18);
-      ctx.lineTo(h.x+h.w+4,gl-h.h);
+      ctx.moveTo(h.x-4,gl-h.h);ctx.lineTo(h.x+h.w/2,gl-h.h-18);ctx.lineTo(h.x+h.w+4,gl-h.h);
       ctx.closePath();ctx.fill();
       ctx.fillStyle='#ffcc55';
       ctx.globalAlpha=.6+0.4*Math.sin(this.t*1.8+h.x*.1);
       ctx.fillRect(h.x+h.w/2-5,gl-h.h+20,10,12);
       ctx.globalAlpha=1;
     });
-
-    // Земля
     const gg=ctx.createLinearGradient(0,gl,0,30);
     gg.addColorStop(0,'#4a3a2a');gg.addColorStop(1,'#2a1f15');
     ctx.fillStyle=gg;
     ctx.fillRect(-500,gl,1000,120);
-
-    // Мостовая
     ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=1;
     for(let y=gl;y<40;y+=11){
       for(let x=-500;x<500;x+=20){
@@ -628,8 +478,6 @@ class Scene2D{
         ctx.strokeRect(x+off,y,20,11);
       }
     }
-
-    // Помост
     ctx.fillStyle='#3a2a1a';
     ctx.fillRect(-300,-16,600,16);
     ctx.strokeStyle='#1a0f08';ctx.lineWidth=2;
@@ -650,43 +498,30 @@ class Scene2D{
 
   drawSpec(ctx,x,y,scale,color,p){
     ctx.save();
-    ctx.translate(x,y);
-    ctx.scale(scale*(p.side),scale);
+    ctx.translate(x,y);ctx.scale(scale*(p.side),scale);
     const bob=Math.sin(this.t*p.bobSpeed+p.bobPhase)*1.5;
     ctx.rotate(Math.sin(this.t*p.bobSpeed*0.5+p.swayPhase)*0.06);
-
     ctx.fillStyle='rgba(0,0,0,.4)';
     ctx.beginPath();ctx.ellipse(0,38,12,3.5,0,0,Math.PI*2);ctx.fill();
-
     ctx.fillStyle='#2a1a10';
     ctx.beginPath();ctx.roundRect(-7,18+bob,5,22,2);ctx.fill();
     ctx.beginPath();ctx.roundRect(2,18+bob,5,22,2);ctx.fill();
-
     ctx.fillStyle=color;
     ctx.beginPath();ctx.roundRect(-10,bob,20,24,4);ctx.fill();
     ctx.strokeStyle='rgba(0,0,0,.4)';ctx.lineWidth=1.4;ctx.stroke();
-
     ctx.strokeStyle=color;ctx.lineWidth=3.5;ctx.lineCap='round';
     const armSwing=Math.sin(this.t*1.5+p.armPhase)*3;
     ctx.beginPath();ctx.moveTo(-10,6+bob);ctx.lineTo(-14,16+bob+armSwing);ctx.stroke();
     ctx.beginPath();ctx.moveTo(10,6+bob);ctx.lineTo(14,16+bob-armSwing);ctx.stroke();
-
     ctx.fillStyle='#e0b090';
     ctx.beginPath();ctx.arc(0,-7+bob,7,0,Math.PI*2);ctx.fill();
     ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=1;ctx.stroke();
-
     const blink=Math.sin(this.t*3+p.blinkPhase)>0.95;
     ctx.fillStyle='#111';
-    if(blink){
-      ctx.fillRect(-4,-8+bob,2,1);ctx.fillRect(2,-8+bob,2,1);
-    } else {
-      ctx.beginPath();ctx.arc(-2.5,-8+bob,1.2,0,Math.PI*2);ctx.fill();
-      ctx.beginPath();ctx.arc(2.5,-8+bob,1.2,0,Math.PI*2);ctx.fill();
-    }
-
+    if(blink){ctx.fillRect(-4,-8+bob,2,1);ctx.fillRect(2,-8+bob,2,1);}
+    else{ctx.beginPath();ctx.arc(-2.5,-8+bob,1.2,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(2.5,-8+bob,1.2,0,Math.PI*2);ctx.fill();}
     ctx.strokeStyle='#111';ctx.lineWidth=.9;
     ctx.beginPath();ctx.arc(0,-4.5+bob,1.8,0.2,Math.PI-0.2);ctx.stroke();
-
     if(p.scale>0.75){
       ctx.fillStyle='#2a1a3a';
       ctx.beginPath();ctx.ellipse(0,-12+bob,8,2.5,0,0,Math.PI*2);ctx.fill();
@@ -695,7 +530,6 @@ class Scene2D{
     ctx.restore();
   }
 
-  // ============ ВИСЕЛИЦЫ ============
   drawHang(ctx,side){
     const h=this.hang[side];
     const baseX=side==='left'?-150:150;
@@ -705,7 +539,6 @@ class Scene2D{
     ctx.save();
     ctx.translate(baseX,0);
 
-    // Подпись
     ctx.save();
     ctx.translate(0,-330);
     ctx.font='bold 11px Arial';
@@ -715,26 +548,20 @@ class Scene2D{
     ctx.restore();
 
     const buildProgress=step>=1&&step===1?e:1;
-    const gallowsVisible=step>=1;
-
-    if(gallowsVisible){
-      // Столб
+    if(step>=1){
       ctx.save();
       ctx.globalAlpha=Math.min(1,buildProgress*2);
       ctx.fillStyle='rgba(0,0,0,.4)';
       ctx.beginPath();ctx.ellipse(0,2,18,4.5,0,0,Math.PI*2);ctx.fill();
-
       const wg=ctx.createLinearGradient(-55,0,-30,0);
       wg.addColorStop(0,'#5a3a1a');wg.addColorStop(.5,'#8B5A2B');wg.addColorStop(1,'#5a3a1a');
       ctx.fillStyle=wg;
       ctx.beginPath();ctx.roundRect(-52,-270,24,270,3);ctx.fill();
       ctx.strokeStyle='#3a2010';ctx.lineWidth=2.2;ctx.stroke();
-
       ctx.strokeStyle='rgba(0,0,0,.2)';ctx.lineWidth=1;
       for(let i=0;i<3;i++){
         ctx.beginPath();ctx.moveTo(-50+i*6,-265);ctx.lineTo(-50+i*6,0);ctx.stroke();
       }
-
       const beamW=110*Math.min(1,buildProgress*1.2);
       if(beamW>5){
         ctx.save();
@@ -752,22 +579,18 @@ class Scene2D{
         }
         ctx.restore();
       }
-
       if(buildProgress>=0.85){
         const ra=(buildProgress-0.85)/0.15;
         const ropeX=-40+110;
         const ropeTopY=-262+9;
         const ropeLen=90*Math.min(1,ra);
         ctx.globalAlpha=Math.min(1,ra);
-
         ctx.strokeStyle='#b89060';ctx.lineWidth=3.5;ctx.lineCap='round';
         ctx.beginPath();ctx.moveTo(ropeX,ropeTopY);ctx.lineTo(ropeX,ropeTopY+ropeLen);ctx.stroke();
-
         ctx.strokeStyle='#8a6a40';ctx.lineWidth=1.3;
         for(let y=ropeTopY;y<ropeTopY+ropeLen;y+=5){
           ctx.beginPath();ctx.moveTo(ropeX-1.5,y);ctx.lineTo(ropeX+1.5,y+2.5);ctx.stroke();
         }
-
         if(ropeLen>=70){
           const np=Math.min(1,(ropeLen-70)/20);
           const nr=14*np;
@@ -782,7 +605,6 @@ class Scene2D{
       ctx.restore();
     }
 
-    // Строители (только на step 1)
     if(step===1){
       const bp=Math.min(1,e);
       const bo=(1-bp)*-70;
@@ -790,7 +612,6 @@ class Scene2D{
       this.drawBuilder(ctx,-80-bo,0,-1);
     }
 
-    // Табурет (step 2 и 3-4)
     if(step>=2&&step<3){
       const se=this.easeOutBack(Math.min(1,e));
       this.drawStool(ctx,-40+110,(1-se)*50,se);
@@ -802,7 +623,6 @@ class Scene2D{
       this.drawStool(ctx,-40+110,0,1);
     }
 
-    // Стражники + человек
     if(step>=3&&step<=4){
       const walkEase=e;
       const walkPhase=Math.min(1,walkEase/0.7);
@@ -811,7 +631,6 @@ class Scene2D{
       const targetX=-40+110;
       const humanX=startX+(targetX-startX)*walkPhase;
       const humanY=step>=4?-standPhase*34:0;
-
       this.drawGuard(ctx,humanX-40,0,1);
       this.drawGuard(ctx,humanX+40,0,-1);
       this.drawHuman(ctx,humanX,humanY,0,step);
@@ -918,9 +737,7 @@ class Scene2D{
     ctx.beginPath();ctx.roundRect(-11,-11,22,29,4);ctx.fill();
     ctx.strokeStyle='#661010';ctx.lineWidth=1.7;ctx.stroke();
     ctx.fillStyle='#ffcc44';
-    for(let i=0;i<3;i++){
-      ctx.beginPath();ctx.arc(0,-3+i*9,1.4,0,Math.PI*2);ctx.fill();
-    }
+    for(let i=0;i<3;i++){ctx.beginPath();ctx.arc(0,-3+i*9,1.4,0,Math.PI*2);ctx.fill();}
     ctx.fillStyle='#aa2222';
     ctx.beginPath();ctx.roundRect(-15,-7,5,24,2);ctx.fill();
     ctx.beginPath();ctx.roundRect(10,-7,5,24,2);ctx.fill();
@@ -940,8 +757,7 @@ class Scene2D{
     ctx.fillStyle=hg;
     ctx.beginPath();
     ctx.arc(0,-23,10,Math.PI,0);
-    ctx.lineTo(10,-20);
-    ctx.lineTo(-10,-20);
+    ctx.lineTo(10,-20);ctx.lineTo(-10,-20);
     ctx.closePath();ctx.fill();
     ctx.strokeStyle='#333';ctx.lineWidth=1.3;ctx.stroke();
     ctx.fillStyle='#dd2222';
@@ -1018,6 +834,149 @@ class Scene2D{
   }
 }
 
+// ============ СЕТЕВОЙ СЛОЙ (PeerJS / WebRTC) ============
+// PeerJS использует публичный бесплатный сервер сигнализации (0.peerjs.com)
+// для установки прямого P2P-соединения между устройствами. Ключи не нужны.
+//
+// Как работает:
+// 1. Хост создаёт Peer с ID = 'hangman-' + ROOMCODE, ждёт соединения
+// 2. Гость создаёт Peer со случайным ID и подключается к 'hangman-' + ROOMCODE
+// 3. Устанавливается DataChannel, через который летят сообщения
+// 4. Всё работает через GitHub Pages — сервер нужен только для "рукопожатия"
+
+class Net{
+  constructor(){
+    this.peer=null;
+    this.conn=null;
+    this.room=null;
+    this.isOpen=false;
+    this.onMessage=null;
+    this.statusCb=null;
+    this.isHost=false;
+    this.reconnectTimer=null;
+  }
+
+  // Хост: создаём Peer с фиксированным ID
+  host(room, onMessage, onStatus){
+    this.room=room;
+    this.isHost=true;
+    this.onMessage=onMessage;
+    this.statusCb=onStatus;
+    this.setStatus('Инициализация сервера...','wait');
+    this._initPeer('hangman-2d-'+room);
+  }
+
+  // Гость: создаём Peer со случайным ID и подключаемся к хосту
+  join(room, onMessage, onStatus){
+    this.room=room;
+    this.isHost=false;
+    this.onMessage=onMessage;
+    this.statusCb=onStatus;
+    this.setStatus('Подключение к хосту...','wait');
+    this._initPeer(null);
+  }
+
+  _initPeer(customId){
+    try{
+      this.peer=customId?new Peer(customId):new Peer();
+    }catch(e){
+      this.setStatus('Ошибка PeerJS: '+e.message,'err');
+      return;
+    }
+
+    this.peer.on('open',(id)=>{
+      this.setStatus('Сервер готов','ok');
+      if(this.isHost){
+        // Ждём подключения гостя
+        this.setStatus('Ожидание соперника...','wait');
+      } else {
+        // Подключаемся к хосту
+        this._connectToHost();
+      }
+    });
+
+    this.peer.on('connection',(conn)=>{
+      // Хост получает входящее соединение
+      this.conn=conn;
+      this._setupConn();
+    });
+
+    this.peer.on('error',(err)=>{
+      console.warn('Peer error:',err);
+      // ID уже занят — переподключаемся как гость
+      if(err.type==='unavailable-id'){
+        this.setStatus('Комната занята','err');
+      } else if(err.type==='peer-unavailable'){
+        this.setStatus('Хост не найден','err');
+      } else {
+        this.setStatus('Ошибка: '+err.type,'err');
+      }
+    });
+
+    this.peer.on('disconnected',()=>{
+      this.setStatus('Отключено, переподключение...','wait');
+      try{ this.peer.reconnect(); }catch(e){}
+    });
+  }
+
+  _connectToHost(){
+    const hostId='hangman-2d-'+this.room;
+    this.setStatus('Поиск хоста...','wait');
+    this.conn=this.peer.connect(hostId,{reliable:true});
+    this._setupConn();
+    // Таймаут если хост не отвечает
+    setTimeout(()=>{
+      if(!this.isOpen){
+        this.setStatus('Хост не отвечает. Проверьте код.','err');
+      }
+    },8000);
+  }
+
+  _setupConn(){
+    if(!this.conn) return;
+    this.conn.on('open',()=>{
+      this.isOpen=true;
+      this.setStatus('Подключено','ok');
+      // Гость уведомляет хоста о подключении
+      if(!this.isHost){
+        this.send({type:'__hello',name:'guest'});
+      }
+    });
+    this.conn.on('data',(data)=>{
+      let msg=data;
+      if(typeof data==='string'){ try{msg=JSON.parse(data)}catch(e){return;} }
+      if(!msg||!msg.type) return;
+      if(this.onMessage) this.onMessage(msg);
+    });
+    this.conn.on('close',()=>{
+      this.isOpen=false;
+      this.setStatus('Соединение закрыто','err');
+    });
+    this.conn.on('error',(err)=>{
+      console.warn('Conn error:',err);
+      this.setStatus('Ошибка соединения','err');
+    });
+  }
+
+  send(msg){
+    if(!this.isOpen||!this.conn||!this.conn.open) return false;
+    try{
+      this.conn.send(JSON.stringify(msg));
+      return true;
+    }catch(e){ return false; }
+  }
+
+  setStatus(text,type){
+    if(this.statusCb) this.statusCb(text,type);
+  }
+
+  close(){
+    try{ if(this.conn) this.conn.close(); }catch(e){}
+    try{ if(this.peer) this.peer.destroy(); }catch(e){}
+    this.conn=null;this.peer=null;this.isOpen=false;
+  }
+}
+
 // ============ ИГРА ============
 const LETTERS='АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'.split('');
 const AI_WORDS=['ПРОГРАММА','КОМПЬЮТЕР','ИНТЕРНЕТ','ТЕЛЕФОН','МОНИТОР','КЛАВИАТУРА','МЫШКА','ПРИНТЕР','НАУШНИКИ','КАМЕРА','ПЛАНШЕТ','НОУТБУК','ХОЛОДИЛЬНИК','МИКРОВОЛНОВКА','ТЕЛЕВИЗОР','ВЕЛОСИПЕД','МАГНИТОФОН'];
@@ -1027,14 +986,15 @@ const Game={
   me:{name:'Вы',word:'',revealed:[],wrong:0},
   opp:{name:'Соперник',word:'',revealed:[],wrong:0},
   guessedMe:new Set(),guessedOpp:new Set(),
-  scene:null,chan:null,seq:0,aiTimer:null,els:{},
+  scene:null,net:null,aiTimer:null,els:{},
 
   init(){
     const ids=['menu','mCreate','mWait','mJoin','mWord','mOver',
       'bCreate','bJoin','bAI','cName','cWord','cErr','cGo','cBack',
       'wCode','wCopy','wCancel','jName','jCode','jErr','jGo','jBack',
       'wordTitle','wordDesc','wordIn','wErr','wordGo','oTitle','oMsg','oRestart','oMenu',
-      'p1i','p2i','p1n','p2n','p1s','p2s','turn','oppWord','myWord','status','kbd','rminfo'];
+      'p1i','p2i','p1n','p2n','p1s','p2s','turn','oppWord','myWord','status','kbd','rminfo',
+      'wStatus','connStatus'];
     ids.forEach(id=>this.els[id]=document.getElementById(id));
 
     this.els.kbd.innerHTML='';
@@ -1059,6 +1019,7 @@ const Game={
     this.els.oRestart.addEventListener('click',()=>this.restart());
     this.els.oMenu.addEventListener('click',()=>this.toMenu());
 
+    this.net=new Net();
     this.scene=new Scene2D(document.getElementById('scene'));
 
     const r=new URLSearchParams(location.search).get('room');
@@ -1074,6 +1035,19 @@ const Game={
   },
 
   setStatus(s){this.els.status.textContent=s;},
+  setNetStatus(text,type){
+    if(!this.els.connStatus) return;
+    if(!text){this.els.connStatus.classList.remove('show');return;}
+    this.els.connStatus.textContent=text;
+    this.els.connStatus.className='conn-status show '+(type||'');
+  },
+  setWaitStatus(text,type){
+    const el=this.els.wStatus;
+    if(!el) return;
+    el.textContent=text;
+    el.className='conn-status show '+(type||'wait');
+    el.style.cssText='position:static;margin:10px auto';
+  },
 
   refreshUI(){
     this.els.p1n.textContent=this.me.name;
@@ -1111,7 +1085,8 @@ const Game={
   startAI(){
     Snd.init();Snd.click();
     this.mode='ai';this.myNum=1;this.turn=1;this.phase='waitingWord';
-    this.roomCode=null;this.chan=null;
+    this.roomCode=null;this.net.close();
+    this.setNetStatus(null);
     this.me={name:'Вы',word:'',revealed:[],wrong:0};
     this.opp={name:'Компьютер',word:'',revealed:[],wrong:0};
     this.guessedMe=new Set();this.guessedOpp=new Set();
@@ -1133,107 +1108,145 @@ const Game={
     const word=this.els.cWord.value.trim().toUpperCase();
     if(!word||!/^[А-ЯЁ]+$/.test(word)){this.els.cErr.textContent='Только русские буквы!';this.els.cErr.style.display='block';return;}
     if(word.length<2){this.els.cErr.textContent='Минимум 2 буквы!';this.els.cErr.style.display='block';return;}
+
     Snd.init();Snd.ping();
-    this.mode='online';this.isHost=true;this.myNum=1;this.turn=1;this.phase='waitingWord';
+    this.mode='online';this.isHost=true;this.myNum=1;this.turn=1;this.phase='waitingOpp';
     this.roomCode=this.genCode();
     this.me={name,word,revealed:new Array(word.length).fill(false),wrong:0};
     this.opp={name:'Ожидание...',word:'',revealed:[],wrong:0};
     this.guessedMe=new Set();this.guessedOpp=new Set();
     if(this.scene)this.scene.reset();
-    this.openChannel();
+
     this.els.wCode.textContent=this.roomCode;
     this.els.rminfo.textContent='Код: '+this.roomCode;
     this.show('mWait');
     this.refreshUI();
-    this.broadcast({type:'host-ready',name,room:this.roomCode});
+
+    this.setWaitStatus('Запуск сервера комнаты...','wait');
+    this.net.host(this.roomCode, (msg)=>this.onNetMessage(msg), (text,type)=>{
+      this.setWaitStatus(text,type);
+      this.setNetStatus(text,type);
+    });
   },
 
-  cancelRoom(){if(this.chan){try{this.chan.close()}catch(e){}this.chan=null;}this.roomCode=null;this.toMenu();},
+  cancelRoom(){
+    this.net.close();
+    this.setNetStatus(null);
+    this.roomCode=null;
+    this.toMenu();
+  },
 
   copyLink(){
     if(!this.roomCode)return;
     const url=location.origin+location.pathname+'?room='+this.roomCode;
-    const done=()=>{Snd.ping();alert('Ссылка скопирована:\n'+url);};
+    const done=()=>{Snd.ping();alert('Ссылка скопирована:\n'+url+'\n\nОтправьте её другу на телефон/компьютер.');};
     if(navigator.clipboard)navigator.clipboard.writeText(url).then(done).catch(()=>prompt('Скопируйте:',url));
     else prompt('Скопируйте:',url);
   },
-
-  openChannel(){
-    if(this.chan){try{this.chan.close()}catch(e){}}
-    if(typeof BroadcastChannel==='undefined'){console.warn('BroadcastChannel не поддерживается');return;}
-    this.chan=new BroadcastChannel('hangman2d-'+this.roomCode);
-    this.chan.onmessage=e=>{const msg=e.data;if(!msg||msg.from===this.myNum)return;this.onMessage(msg);};
-  },
-
-  broadcast(msg){if(!this.chan)return;msg.from=this.myNum;msg.seq=++this.seq;try{this.chan.postMessage(msg);}catch(e){}},
 
   joinRoom(){
     const name=this.els.jName.value.trim()||'Игрок 2';
     const code=this.els.jCode.value.trim().toUpperCase();
     if(!code){this.els.jErr.textContent='Введите код!';this.els.jErr.style.display='block';return;}
+
     Snd.init();Snd.ping();
-    this.mode='online';this.isHost=false;this.myNum=2;this.turn=1;this.phase='waitingWord';
+    this.mode='online';this.isHost=false;this.myNum=2;this.turn=1;this.phase='waitingOpp';
     this.roomCode=code;
     this.me={name,word:'',revealed:[],wrong:0};
     this.opp={name:'Хост',word:'',revealed:[],wrong:0};
     this.guessedMe=new Set();this.guessedOpp=new Set();
     if(this.scene)this.scene.reset();
-    this.openChannel();
+
     this.els.rminfo.textContent='Код: '+code;
-    this.els.wordTitle.textContent='Загадайте слово';
-    this.els.wordDesc.textContent='Хост будет угадывать это слово';
-    this.els.wordIn.value='';
-    this.els.wErr.style.display='none';
-    this.show('mWord');
-    setTimeout(()=>this.els.wordIn.focus(),150);
-    this.broadcast({type:'join',name,room:code});
-    this.refreshUI();
+    this.show(null);
+    this.setStatus('Подключение к комнате...');
+    this.setNetStatus('Подключение...','wait');
+
+    this.net.join(this.roomCode, (msg)=>this.onNetMessage(msg), (text,type)=>{
+      this.setNetStatus(text,type);
+      if(type==='err') this.setStatus(text);
+    });
+  },
+
+  onNetMessage(msg){
+    if(!msg||!msg.type)return;
+    const t=msg.type;
+
+    // Гость присоединился → хост отправляет своё слово и просит слово гостя
+    if(t==='__hello'){
+      if(this.isHost&&this.phase==='waitingOpp'){
+        // Хост отправляет своё слово гостю
+        this.net.send({type:'word',word:this.me.word,name:this.me.name});
+        // Просит гостя загадать слово
+        this.net.send({type:'ask-word'});
+        this.opp.name='Соперник';
+        this.refreshUI();
+        this.setStatus('Соперник подключился!');
+        Snd.ping();
+        this.setWaitStatus('Соперник подключился!','ok');
+        this.setNetStatus('Подключено','ok');
+        this.els.wordTitle.textContent='Ожидание слова соперника';
+        this.show(null);
+      }
+      return;
+    }
+
+    if(t==='word'){
+      this.opp.name=msg.name||this.opp.name;
+      this.opp.word=msg.word;
+      this.opp.revealed=new Array(msg.word.length).fill(false);
+      this.refreshUI();
+      this.checkReady();
+      return;
+    }
+
+    if(t==='ask-word'){
+      if(!this.isHost&&this.phase==='waitingOpp'){
+        this.els.wordTitle.textContent='Загадайте слово';
+        this.els.wordDesc.textContent='Хост будет угадывать это слово';
+        this.els.wordIn.value='';
+        this.els.wErr.style.display='none';
+        this.show('mWord');
+        setTimeout(()=>this.els.wordIn.focus(),150);
+      }
+      return;
+    }
+
+    if(t==='guess'){this.oppGuess(msg.letter);return;}
+    if(t==='turn'){this.turn=msg.turn;this.refreshUI();return;}
+    if(t==='gameover'){this.phase='ended';this.showResult(msg.winnerName,msg.loserName);return;}
+    if(t==='restart'){this.toMenu();return;}
+  },
+
+  checkReady(){
+    if(this.me.word&&this.opp.word&&(this.phase==='waitingOpp'||this.phase==='waitingWord')){
+      this.startPlaying();
+    }
   },
 
   submitWord(){
     const val=this.els.wordIn.value.trim().toUpperCase();
     if(!val||!/^[А-ЯЁ]+$/.test(val)){this.els.wErr.textContent='Только русские буквы!';this.els.wErr.style.display='block';return;}
     if(val.length<2){this.els.wErr.textContent='Минимум 2 буквы!';this.els.wErr.style.display='block';return;}
+
     Snd.ping();
     this.me.word=val;
     this.me.revealed=new Array(val.length).fill(false);
     this.show(null);
-    if(this.mode==='ai'){this.startPlaying();}
-    else{
-      this.broadcast({type:'word',word:val,name:this.me.name});
-      this.broadcast({type:'word-ready',name:this.me.name});
-      this.els.rminfo.textContent='Код: '+this.roomCode+' — ждём соперника';
-      this.setStatus('Слово принято. Ожидание соперника...');
-      this.checkBothWords();
-    }
-  },
 
-  onMessage(msg){
-    switch(msg.type){
-      case 'host-ready':break;
-      case 'join':if(this.isHost){this.opp.name=msg.name;this.refreshUI();Snd.ping();}break;
-      case 'word':
-        this.opp.name=msg.name||this.opp.name;
-        this.opp.word=msg.word;
-        this.opp.revealed=new Array(msg.word.length).fill(false);
-        this.refreshUI();this.checkBothWords();
-        break;
-      case 'word-ready':this.checkBothWords();break;
-      case 'guess':this.oppGuess(msg.letter);break;
-      case 'turn':this.turn=msg.turn;this.refreshUI();break;
-      case 'gameover':this.phase='ended';this.showResult(msg.winnerName,msg.loserName);break;
-      case 'restart':this.toMenu();break;
-    }
-  },
+    if(this.mode==='ai'){this.startPlaying();return;}
 
-  checkBothWords(){if(this.me.word&&this.opp.word&&this.phase!=='playing')this.startPlaying();},
+    this.net.send({type:'word',word:val,name:this.me.name});
+    this.setStatus('Слово принято. Ожидание соперника...');
+    this.checkReady();
+  },
 
   startPlaying(){
     if(this.phase==='playing')return;
     this.phase='playing';
-    if(this.myNum===1){this.turn=1;this.setStatus('Ваш ход! Угадайте букву в слове соперника');}
+    if(this.isHost){this.turn=1;this.setStatus('Ваш ход! Угадайте букву в слове соперника');}
     else{this.turn=2;this.setStatus('Ход соперника...');}
-    this.broadcast({type:'turn',turn:1});
+    if(this.mode==='online')this.net.send({type:'turn',turn:1});
     this.refreshUI();
   },
 
@@ -1253,7 +1266,7 @@ const Game={
       Snd.ok();
       if(key)key.classList.add('ok');
       this.setStatus('✅ Буква "'+letter+'" есть в слове соперника!');
-      this.broadcast({type:'guess',letter,by:this.myNum});
+      if(this.mode==='online')this.net.send({type:'guess',letter,by:this.myNum});
       this.refreshUI();
       if(this.opp.revealed.every(r=>r)){this.gameOver(this.me.name,this.opp.name,'win');return;}
     } else {
@@ -1261,14 +1274,14 @@ const Game={
       if(key)key.classList.add('no');
       this.me.wrong++;
       this.setStatus('❌ Буквы "'+letter+'" нет! ('+this.me.wrong+'/5)');
-      this.broadcast({type:'guess',letter,by:this.myNum});
+      if(this.mode==='online')this.net.send({type:'guess',letter,by:this.myNum});
       if(this.scene)this.scene.setStep('left',this.me.wrong);
       Snd.step(this.me.wrong-1);
       this.refreshUI();
       if(this.me.wrong>=5){this.gameOver(this.opp.name,this.me.name,'lose');return;}
       this.turn=2;
       this.refreshUI();
-      this.broadcast({type:'turn',turn:2});
+      if(this.mode==='online')this.net.send({type:'turn',turn:2});
       if(this.mode==='ai'){this.setStatus('Ход компьютера...');this.aiTurn();}
       else this.setStatus('Ход соперника...');
     }
@@ -1341,7 +1354,7 @@ const Game={
     if(this.aiTimer){clearTimeout(this.aiTimer);this.aiTimer=null;}
     if(result==='win')setTimeout(()=>Snd.win(),200);
     else setTimeout(()=>Snd.lose(),200);
-    this.broadcast({type:'gameover',winnerName,loserName,result});
+    if(this.mode==='online')this.net.send({type:'gameover',winnerName,loserName,result});
     setTimeout(()=>this.showResult(winnerName,loserName),1600);
   },
 
@@ -1352,11 +1365,16 @@ const Game={
     this.refreshUI();
   },
 
-  restart(){Snd.click();if(this.mode==='online')this.broadcast({type:'restart'});this.toMenu();},
+  restart(){
+    Snd.click();
+    if(this.mode==='online')this.net.send({type:'restart'});
+    this.toMenu();
+  },
 
   toMenu(){
     if(this.aiTimer){clearTimeout(this.aiTimer);this.aiTimer=null;}
-    if(this.chan){try{this.chan.close()}catch(e){}this.chan=null;}
+    this.net.close();
+    this.setNetStatus(null);
     this.mode='menu';this.phase='menu';this.roomCode=null;
     this.me={name:'Вы',word:'',revealed:[],wrong:0};
     this.opp={name:'Соперник',word:'',revealed:[],wrong:0};
