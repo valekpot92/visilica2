@@ -242,7 +242,6 @@ const Snd={
   ping(){this.init();this.t(880,.07);setTimeout(()=>this.t(1100,.11),70);}
 };
 
-// ============ ПОЛИФИЛЛ roundRect ============
 if(!CanvasRenderingContext2D.prototype.roundRect){
   CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){
     if(typeof r==='number')r={tl:r,tr:r,br:r,bl:r};
@@ -339,39 +338,28 @@ class Scene2D{
     ctx.save();
     ctx.translate(cx,baseY);
     ctx.scale(scale,scale);
-
     this.drawSky(ctx);
     this.drawCastle(ctx);
     this.drawTown(ctx);
     this.drawCrowd(ctx);
     this.drawHang(ctx,'left');
     this.drawHang(ctx,'right');
-
     ctx.restore();
   }
 
   drawSky(ctx){
     const g=ctx.createLinearGradient(0,-600,0,0);
-    g.addColorStop(0,'#1a1a3a');
-    g.addColorStop(.4,'#3a2a5a');
-    g.addColorStop(.75,'#6a4a6a');
-    g.addColorStop(1,'#aa7a5a');
+    g.addColorStop(0,'#1a1a3a');g.addColorStop(.4,'#3a2a5a');g.addColorStop(.75,'#6a4a6a');g.addColorStop(1,'#aa7a5a');
     ctx.fillStyle=g;
     ctx.fillRect(-500,-600,1000,700);
-
     const moonX=200,moonY=-300;
     const mg=ctx.createRadialGradient(moonX,moonY,5,moonX,moonY,55);
-    mg.addColorStop(0,'#fff8d0');
-    mg.addColorStop(.5,'#ffe9a0');
-    mg.addColorStop(1,'rgba(255,233,160,0)');
-    ctx.fillStyle=mg;
-    ctx.beginPath();ctx.arc(moonX,moonY,55,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#fff8d0';
-    ctx.beginPath();ctx.arc(moonX,moonY,24,0,Math.PI*2);ctx.fill();
+    mg.addColorStop(0,'#fff8d0');mg.addColorStop(.5,'#ffe9a0');mg.addColorStop(1,'rgba(255,233,160,0)');
+    ctx.fillStyle=mg;ctx.beginPath();ctx.arc(moonX,moonY,55,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#fff8d0';ctx.beginPath();ctx.arc(moonX,moonY,24,0,Math.PI*2);ctx.fill();
     ctx.fillStyle='rgba(220,200,140,.5)';
     ctx.beginPath();ctx.arc(moonX-7,moonY-5,4,0,Math.PI*2);ctx.fill();
     ctx.beginPath();ctx.arc(moonX+6,moonY+3,3,0,Math.PI*2);ctx.fill();
-
     ctx.fillStyle='#fff';
     for(let i=0;i<35;i++){
       const sx=(Math.sin(i*137.5)*0.5+0.5)*900-450;
@@ -389,7 +377,6 @@ class Scene2D{
     wg.addColorStop(0,'#4a3a5a');wg.addColorStop(1,'#2a1f3a');
     ctx.fillStyle=wg;
     ctx.fillRect(cx0-cw/2,cy+50,cw,ch-50);
-
     ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=1;
     for(let y=cy+60;y<cy+ch;y+=12){
       for(let x=cx0-cw/2;x<cx0+cw/2;x+=20){
@@ -397,22 +384,16 @@ class Scene2D{
         ctx.strokeRect(x+off,y,20,12);
       }
     }
-
     ctx.fillStyle='#3a2a4a';
     for(let x=cx0-cw/2;x<cx0+cw/2;x+=24)ctx.fillRect(x,cy+38,14,18);
-
     this.drawTower(ctx,cx0-cw/2-5,cy-60,50,210);
     this.drawTower(ctx,cx0+cw/2+5,cy-60,50,210);
     this.drawTower(ctx,cx0,cy-90,70,250);
-
     ctx.fillStyle='#1a0f2a';
     ctx.beginPath();
-    ctx.moveTo(cx0-24,cy+ch);
-    ctx.lineTo(cx0-24,cy+120);
+    ctx.moveTo(cx0-24,cy+ch);ctx.lineTo(cx0-24,cy+120);
     ctx.quadraticCurveTo(cx0,cy+90,cx0+24,cy+120);
-    ctx.lineTo(cx0+24,cy+ch);
-    ctx.closePath();ctx.fill();
-
+    ctx.lineTo(cx0+24,cy+ch);ctx.closePath();ctx.fill();
     ctx.fillStyle='#ffcc55';
     const wins=[[-160,cy+80,7,10],[-120,cy+90,5,8],[90,cy+75,7,10],[140,cy+85,5,8]];
     wins.forEach(w=>{
@@ -425,8 +406,7 @@ class Scene2D{
   drawTower(ctx,x,y,w,h){
     const g=ctx.createLinearGradient(x-w/2,y,x+w/2,y);
     g.addColorStop(0,'#3a2a4a');g.addColorStop(.5,'#5a4a6a');g.addColorStop(1,'#3a2a4a');
-    ctx.fillStyle=g;
-    ctx.fillRect(x-w/2,y,w,h);
+    ctx.fillStyle=g;ctx.fillRect(x-w/2,y,w,h);
     ctx.fillStyle='#2a1f3a';
     for(let i=0;i<3;i++)ctx.fillRect(x-w/2+i*(w/3),y-12,w/4.5,14);
     ctx.strokeStyle='rgba(0,0,0,.35)';ctx.lineWidth=1;
@@ -437,12 +417,9 @@ class Scene2D{
       }
     }
     ctx.fillStyle='#ffcc55';
-    ctx.fillRect(x-3,y+25,6,10);
-    ctx.fillRect(x-3,y+70,6,10);
+    ctx.fillRect(x-3,y+25,6,10);ctx.fillRect(x-3,y+70,6,10);
     ctx.fillStyle='#2a1f3a';
-    ctx.beginPath();
-    ctx.moveTo(x-w/2-6,y);ctx.lineTo(x,y-26);ctx.lineTo(x+w/2+6,y);
-    ctx.closePath();ctx.fill();
+    ctx.beginPath();ctx.moveTo(x-w/2-6,y);ctx.lineTo(x,y-26);ctx.lineTo(x+w/2+6,y);ctx.closePath();ctx.fill();
     ctx.strokeStyle='#8B5A2B';ctx.lineWidth=2;
     ctx.beginPath();ctx.moveTo(x,y-26);ctx.lineTo(x,y-48);ctx.stroke();
     ctx.fillStyle='#cc3333';
@@ -456,12 +433,9 @@ class Scene2D{
       {x:210,w:44,h:52,c:'#4a4a5a'},{x:265,w:40,h:64,c:'#5a4a5a'},{x:315,w:48,h:56,c:'#4a3a5a'}
     ];
     houses.forEach(h=>{
-      ctx.fillStyle=h.c;
-      ctx.fillRect(h.x,gl-h.h,h.w,h.h);
+      ctx.fillStyle=h.c;ctx.fillRect(h.x,gl-h.h,h.w,h.h);
       ctx.fillStyle='#3a2a3a';
-      ctx.beginPath();
-      ctx.moveTo(h.x-4,gl-h.h);ctx.lineTo(h.x+h.w/2,gl-h.h-18);ctx.lineTo(h.x+h.w+4,gl-h.h);
-      ctx.closePath();ctx.fill();
+      ctx.beginPath();ctx.moveTo(h.x-4,gl-h.h);ctx.lineTo(h.x+h.w/2,gl-h.h-18);ctx.lineTo(h.x+h.w+4,gl-h.h);ctx.closePath();ctx.fill();
       ctx.fillStyle='#ffcc55';
       ctx.globalAlpha=.6+0.4*Math.sin(this.t*1.8+h.x*.1);
       ctx.fillRect(h.x+h.w/2-5,gl-h.h+20,10,12);
@@ -469,8 +443,7 @@ class Scene2D{
     });
     const gg=ctx.createLinearGradient(0,gl,0,30);
     gg.addColorStop(0,'#4a3a2a');gg.addColorStop(1,'#2a1f15');
-    ctx.fillStyle=gg;
-    ctx.fillRect(-500,gl,1000,120);
+    ctx.fillStyle=gg;ctx.fillRect(-500,gl,1000,120);
     ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=1;
     for(let y=gl;y<40;y+=11){
       for(let x=-500;x<500;x+=20){
@@ -478,27 +451,21 @@ class Scene2D{
         ctx.strokeRect(x+off,y,20,11);
       }
     }
-    ctx.fillStyle='#3a2a1a';
-    ctx.fillRect(-300,-16,600,16);
-    ctx.strokeStyle='#1a0f08';ctx.lineWidth=2;
-    ctx.strokeRect(-300,-16,600,16);
-    for(let x=-300;x<300;x+=40){
-      ctx.beginPath();ctx.moveTo(x,-16);ctx.lineTo(x,0);ctx.stroke();
-    }
+    ctx.fillStyle='#3a2a1a';ctx.fillRect(-300,-16,600,16);
+    ctx.strokeStyle='#1a0f08';ctx.lineWidth=2;ctx.strokeRect(-300,-16,600,16);
+    for(let x=-300;x<300;x+=40){ctx.beginPath();ctx.moveTo(x,-16);ctx.lineTo(x,0);ctx.stroke();}
   }
 
   drawCrowd(ctx){
     const sorted=[...this.crowd].sort((a,b)=>a.y-b.y);
     sorted.forEach(p=>{
-      const px=p.x*380;
-      const py=14+p.y*160;
+      const px=p.x*380,py=14+p.y*160;
       this.drawSpec(ctx,px,py,p.scale,p.color,p);
     });
   }
 
   drawSpec(ctx,x,y,scale,color,p){
-    ctx.save();
-    ctx.translate(x,y);ctx.scale(scale*(p.side),scale);
+    ctx.save();ctx.translate(x,y);ctx.scale(scale*(p.side),scale);
     const bob=Math.sin(this.t*p.bobSpeed+p.bobPhase)*1.5;
     ctx.rotate(Math.sin(this.t*p.bobSpeed*0.5+p.swayPhase)*0.06);
     ctx.fillStyle='rgba(0,0,0,.4)';
@@ -506,15 +473,13 @@ class Scene2D{
     ctx.fillStyle='#2a1a10';
     ctx.beginPath();ctx.roundRect(-7,18+bob,5,22,2);ctx.fill();
     ctx.beginPath();ctx.roundRect(2,18+bob,5,22,2);ctx.fill();
-    ctx.fillStyle=color;
-    ctx.beginPath();ctx.roundRect(-10,bob,20,24,4);ctx.fill();
+    ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(-10,bob,20,24,4);ctx.fill();
     ctx.strokeStyle='rgba(0,0,0,.4)';ctx.lineWidth=1.4;ctx.stroke();
     ctx.strokeStyle=color;ctx.lineWidth=3.5;ctx.lineCap='round';
     const armSwing=Math.sin(this.t*1.5+p.armPhase)*3;
     ctx.beginPath();ctx.moveTo(-10,6+bob);ctx.lineTo(-14,16+bob+armSwing);ctx.stroke();
     ctx.beginPath();ctx.moveTo(10,6+bob);ctx.lineTo(14,16+bob-armSwing);ctx.stroke();
-    ctx.fillStyle='#e0b090';
-    ctx.beginPath();ctx.arc(0,-7+bob,7,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#e0b090';ctx.beginPath();ctx.arc(0,-7+bob,7,0,Math.PI*2);ctx.fill();
     ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=1;ctx.stroke();
     const blink=Math.sin(this.t*3+p.blinkPhase)>0.95;
     ctx.fillStyle='#111';
@@ -559,15 +524,11 @@ class Scene2D{
       ctx.beginPath();ctx.roundRect(-52,-270,24,270,3);ctx.fill();
       ctx.strokeStyle='#3a2010';ctx.lineWidth=2.2;ctx.stroke();
       ctx.strokeStyle='rgba(0,0,0,.2)';ctx.lineWidth=1;
-      for(let i=0;i<3;i++){
-        ctx.beginPath();ctx.moveTo(-50+i*6,-265);ctx.lineTo(-50+i*6,0);ctx.stroke();
-      }
+      for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(-50+i*6,-265);ctx.lineTo(-50+i*6,0);ctx.stroke();}
       const beamW=110*Math.min(1,buildProgress*1.2);
       if(beamW>5){
-        ctx.save();
-        ctx.translate(-40,-262);
-        ctx.fillStyle='rgba(0,0,0,.3)';
-        ctx.fillRect(0,-2,beamW,18);
+        ctx.save();ctx.translate(-40,-262);
+        ctx.fillStyle='rgba(0,0,0,.3)';ctx.fillRect(0,-2,beamW,18);
         const bg=ctx.createLinearGradient(0,-10,0,8);
         bg.addColorStop(0,'#8B5A2B');bg.addColorStop(.5,'#a06a3a');bg.addColorStop(1,'#6a4a2a');
         ctx.fillStyle=bg;
@@ -611,18 +572,13 @@ class Scene2D{
       this.drawBuilder(ctx,55+bo,0,1);
       this.drawBuilder(ctx,-80-bo,0,-1);
     }
-
     if(step>=2&&step<3){
       const se=this.easeOutBack(Math.min(1,e));
       this.drawStool(ctx,-40+110,(1-se)*50,se);
-      if(e<0.7){
-        const leave=1-e/0.7;
-        this.drawCarrier(ctx,-40+110+100*leave,0);
-      }
+      if(e<0.7){const leave=1-e/0.7;this.drawCarrier(ctx,-40+110+100*leave,0);}
     } else if(step>=3&&step<5){
       this.drawStool(ctx,-40+110,0,1);
     }
-
     if(step>=3&&step<=4){
       const walkEase=e;
       const walkPhase=Math.min(1,walkEase/0.7);
@@ -642,7 +598,6 @@ class Scene2D{
       const humanY=ropeEndY-36+de*22;
       this.drawHuman(ctx,ropeX,humanY,0,step);
     }
-
     ctx.restore();
   }
 
@@ -653,8 +608,7 @@ class Scene2D{
     ctx.fillStyle='#4a3a2a';
     ctx.beginPath();ctx.roundRect(-6,13,5,18,2);ctx.fill();
     ctx.beginPath();ctx.roundRect(1,13,5,18,2);ctx.fill();
-    ctx.fillStyle='#8a6a4a';
-    ctx.beginPath();ctx.roundRect(-9,-4,18,20,4);ctx.fill();
+    ctx.fillStyle='#8a6a4a';ctx.beginPath();ctx.roundRect(-9,-4,18,20,4);ctx.fill();
     ctx.strokeStyle='#4a3a2a';ctx.lineWidth=1.3;ctx.stroke();
     ctx.strokeStyle='#8a6a4a';ctx.lineWidth=3.5;ctx.lineCap='round';
     ctx.beginPath();ctx.moveTo(9,2);ctx.lineTo(14,11);ctx.stroke();
@@ -663,11 +617,9 @@ class Scene2D{
     ctx.fillStyle='#666';ctx.fillRect(11,0,9,4);
     ctx.strokeStyle='#8a6a4a';ctx.lineWidth=3.5;
     ctx.beginPath();ctx.moveTo(-9,2);ctx.lineTo(-13,11);ctx.stroke();
-    ctx.fillStyle='#e0b090';
-    ctx.beginPath();ctx.arc(0,-12,6.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#e0b090';ctx.beginPath();ctx.arc(0,-12,6.5,0,Math.PI*2);ctx.fill();
     ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=1;ctx.stroke();
-    ctx.fillStyle='#3a2a1a';
-    ctx.beginPath();ctx.arc(0,-14,6.5,Math.PI,0);ctx.fill();
+    ctx.fillStyle='#3a2a1a';ctx.beginPath();ctx.arc(0,-14,6.5,Math.PI,0);ctx.fill();
     ctx.fillStyle='#111';
     ctx.beginPath();ctx.arc(-2,-13,1,0,Math.PI*2);ctx.fill();
     ctx.beginPath();ctx.arc(3,-13,1,0,Math.PI*2);ctx.fill();
@@ -682,17 +634,14 @@ class Scene2D{
     ctx.fillStyle='#4a3a2a';
     ctx.beginPath();ctx.roundRect(-6+ls,13,5,18,2);ctx.fill();
     ctx.beginPath();ctx.roundRect(1-ls,13,5,18,2);ctx.fill();
-    ctx.fillStyle='#4a6a8a';
-    ctx.beginPath();ctx.roundRect(-9,-4,18,20,4);ctx.fill();
+    ctx.fillStyle='#4a6a8a';ctx.beginPath();ctx.roundRect(-9,-4,18,20,4);ctx.fill();
     ctx.strokeStyle='#2a3a4a';ctx.lineWidth=1.3;ctx.stroke();
     ctx.strokeStyle='#4a6a8a';ctx.lineWidth=3.5;ctx.lineCap='round';
     ctx.beginPath();ctx.moveTo(-9,2);ctx.lineTo(-13,-4);ctx.stroke();
     ctx.beginPath();ctx.moveTo(9,2);ctx.lineTo(13,-4);ctx.stroke();
-    ctx.fillStyle='#e0b090';
-    ctx.beginPath();ctx.arc(0,-12,6.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#e0b090';ctx.beginPath();ctx.arc(0,-12,6.5,0,Math.PI*2);ctx.fill();
     ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=1;ctx.stroke();
-    ctx.fillStyle='#2a1a10';
-    ctx.beginPath();ctx.arc(0,-14,6.5,Math.PI,0);ctx.fill();
+    ctx.fillStyle='#2a1a10';ctx.beginPath();ctx.arc(0,-14,6.5,Math.PI,0);ctx.fill();
     ctx.fillStyle='#111';
     ctx.beginPath();ctx.arc(-2,-13,1,0,Math.PI*2);ctx.fill();
     ctx.beginPath();ctx.arc(3,-13,1,0,Math.PI*2);ctx.fill();
@@ -744,8 +693,7 @@ class Scene2D{
     ctx.fillStyle='#e0b090';
     ctx.beginPath();ctx.arc(-12.5,18,3.5,0,Math.PI*2);ctx.fill();
     ctx.beginPath();ctx.arc(12.5,18,3.5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#e0b090';
-    ctx.beginPath();ctx.arc(0,-22,9,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#e0b090';ctx.beginPath();ctx.arc(0,-22,9,0,Math.PI*2);ctx.fill();
     ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=1;ctx.stroke();
     ctx.fillStyle='#111';
     ctx.beginPath();ctx.arc(-3,-23,1.4,0,Math.PI*2);ctx.fill();
@@ -757,8 +705,7 @@ class Scene2D{
     ctx.fillStyle=hg;
     ctx.beginPath();
     ctx.arc(0,-23,10,Math.PI,0);
-    ctx.lineTo(10,-20);ctx.lineTo(-10,-20);
-    ctx.closePath();ctx.fill();
+    ctx.lineTo(10,-20);ctx.lineTo(-10,-20);ctx.closePath();ctx.fill();
     ctx.strokeStyle='#333';ctx.lineWidth=1.3;ctx.stroke();
     ctx.fillStyle='#dd2222';
     ctx.beginPath();ctx.ellipse(0,-37,2.5,5,0,0,Math.PI*2);ctx.fill();
@@ -785,8 +732,7 @@ class Scene2D{
     ctx.fillStyle='#1a1a1a';
     ctx.beginPath();ctx.roundRect(-9+ls,46,10,5,2);ctx.fill();
     ctx.beginPath();ctx.roundRect(-1-ls,46,10,5,2);ctx.fill();
-    ctx.fillStyle='#445599';
-    ctx.beginPath();ctx.roundRect(-10,-9,20,27,4);ctx.fill();
+    ctx.fillStyle='#445599';ctx.beginPath();ctx.roundRect(-10,-9,20,27,4);ctx.fill();
     ctx.strokeStyle='#223355';ctx.lineWidth=1.4;ctx.stroke();
     ctx.fillStyle='#445599';
     ctx.beginPath();ctx.roundRect(-14,-5,5,22,2);ctx.fill();
@@ -834,113 +780,61 @@ class Scene2D{
   }
 }
 
-// ============ СЕТЕВОЙ СЛОЙ (PeerJS / WebRTC) ============
-// PeerJS использует публичный бесплатный сервер сигнализации (0.peerjs.com)
-// для установки прямого P2P-соединения между устройствами. Ключи не нужны.
-//
-// Как работает:
-// 1. Хост создаёт Peer с ID = 'hangman-' + ROOMCODE, ждёт соединения
-// 2. Гость создаёт Peer со случайным ID и подключается к 'hangman-' + ROOMCODE
-// 3. Устанавливается DataChannel, через который летят сообщения
-// 4. Всё работает через GitHub Pages — сервер нужен только для "рукопожатия"
-
+// ============ СЕТЕВОЙ СЛОЙ (PeerJS) ============
 class Net{
   constructor(){
-    this.peer=null;
-    this.conn=null;
-    this.room=null;
-    this.isOpen=false;
-    this.onMessage=null;
-    this.statusCb=null;
-    this.isHost=false;
-    this.reconnectTimer=null;
+    this.peer=null;this.conn=null;this.room=null;
+    this.isOpen=false;this.onMessage=null;this.statusCb=null;this.isHost=false;
   }
-
-  // Хост: создаём Peer с фиксированным ID
-  host(room, onMessage, onStatus){
-    this.room=room;
-    this.isHost=true;
-    this.onMessage=onMessage;
-    this.statusCb=onStatus;
+  host(room,onMessage,onStatus){
+    this.room=room;this.isHost=true;this.onMessage=onMessage;this.statusCb=onStatus;
     this.setStatus('Инициализация сервера...','wait');
-    this._initPeer('hangman-2d-'+room);
+    this._initPeer('hangman-2d-v2-'+room);
   }
-
-  // Гость: создаём Peer со случайным ID и подключаемся к хосту
-  join(room, onMessage, onStatus){
-    this.room=room;
-    this.isHost=false;
-    this.onMessage=onMessage;
-    this.statusCb=onStatus;
+  join(room,onMessage,onStatus){
+    this.room=room;this.isHost=false;this.onMessage=onMessage;this.statusCb=onStatus;
     this.setStatus('Подключение к хосту...','wait');
     this._initPeer(null);
   }
-
   _initPeer(customId){
-    try{
-      this.peer=customId?new Peer(customId):new Peer();
-    }catch(e){
-      this.setStatus('Ошибка PeerJS: '+e.message,'err');
-      return;
-    }
+    try{ this.peer=customId?new Peer(customId):new Peer(); }
+    catch(e){ this.setStatus('Ошибка PeerJS: '+e.message,'err'); return; }
 
     this.peer.on('open',(id)=>{
       this.setStatus('Сервер готов','ok');
-      if(this.isHost){
-        // Ждём подключения гостя
-        this.setStatus('Ожидание соперника...','wait');
-      } else {
-        // Подключаемся к хосту
-        this._connectToHost();
-      }
+      if(this.isHost) this.setStatus('Ожидание соперника...','wait');
+      else this._connectToHost();
     });
-
     this.peer.on('connection',(conn)=>{
-      // Хост получает входящее соединение
       this.conn=conn;
       this._setupConn();
     });
-
     this.peer.on('error',(err)=>{
       console.warn('Peer error:',err);
-      // ID уже занят — переподключаемся как гость
-      if(err.type==='unavailable-id'){
-        this.setStatus('Комната занята','err');
-      } else if(err.type==='peer-unavailable'){
-        this.setStatus('Хост не найден','err');
-      } else {
-        this.setStatus('Ошибка: '+err.type,'err');
-      }
+      if(err.type==='unavailable-id') this.setStatus('Комната занята','err');
+      else if(err.type==='peer-unavailable') this.setStatus('Хост не найден','err');
+      else this.setStatus('Ошибка: '+err.type,'err');
     });
-
     this.peer.on('disconnected',()=>{
       this.setStatus('Отключено, переподключение...','wait');
       try{ this.peer.reconnect(); }catch(e){}
     });
   }
-
   _connectToHost(){
-    const hostId='hangman-2d-'+this.room;
+    const hostId='hangman-2d-v2-'+this.room;
     this.setStatus('Поиск хоста...','wait');
     this.conn=this.peer.connect(hostId,{reliable:true});
     this._setupConn();
-    // Таймаут если хост не отвечает
     setTimeout(()=>{
-      if(!this.isOpen){
-        this.setStatus('Хост не отвечает. Проверьте код.','err');
-      }
+      if(!this.isOpen) this.setStatus('Хост не отвечает. Проверьте код.','err');
     },8000);
   }
-
   _setupConn(){
     if(!this.conn) return;
     this.conn.on('open',()=>{
       this.isOpen=true;
       this.setStatus('Подключено','ok');
-      // Гость уведомляет хоста о подключении
-      if(!this.isHost){
-        this.send({type:'__hello',name:'guest'});
-      }
+      if(!this.isHost) this.send({type:'__hello'});
     });
     this.conn.on('data',(data)=>{
       let msg=data;
@@ -957,19 +851,12 @@ class Net{
       this.setStatus('Ошибка соединения','err');
     });
   }
-
   send(msg){
     if(!this.isOpen||!this.conn||!this.conn.open) return false;
-    try{
-      this.conn.send(JSON.stringify(msg));
-      return true;
-    }catch(e){ return false; }
+    try{ this.conn.send(JSON.stringify(msg)); return true; }
+    catch(e){ return false; }
   }
-
-  setStatus(text,type){
-    if(this.statusCb) this.statusCb(text,type);
-  }
-
+  setStatus(text,type){ if(this.statusCb) this.statusCb(text,type); }
   close(){
     try{ if(this.conn) this.conn.close(); }catch(e){}
     try{ if(this.peer) this.peer.destroy(); }catch(e){}
@@ -981,11 +868,36 @@ class Net{
 const LETTERS='АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'.split('');
 const AI_WORDS=['ПРОГРАММА','КОМПЬЮТЕР','ИНТЕРНЕТ','ТЕЛЕФОН','МОНИТОР','КЛАВИАТУРА','МЫШКА','ПРИНТЕР','НАУШНИКИ','КАМЕРА','ПЛАНШЕТ','НОУТБУК','ХОЛОДИЛЬНИК','МИКРОВОЛНОВКА','ТЕЛЕВИЗОР','ВЕЛОСИПЕД','МАГНИТОФОН'];
 
+// ============================================================
+// ЛОГИКА: хост — авторитет. Он знает:
+//  - своё слово (wordHost) и угадывания по нему (revHost) — их делает гость
+//  - слово гостя (wordGuest) и угадывания по нему (revGuest) — их делает хост
+//  - turn: 1 = ход хоста, 2 = ход гостя
+//
+// Каждое действие игрока — это 'guess' с буквой. Принимает его ХОСТ,
+// обновляет состояние и рассылает всем полный state.
+//
+// Клиент (гость) отображает state как есть. Никаких локальных решений.
+// ============================================================
+
 const Game={
-  mode:'menu',phase:'menu',roomCode:null,isHost:false,myNum:1,turn:1,
-  me:{name:'Вы',word:'',revealed:[],wrong:0},
-  opp:{name:'Соперник',word:'',revealed:[],wrong:0},
-  guessedMe:new Set(),guessedOpp:new Set(),
+  mode:'menu',phase:'menu',roomCode:null,isHost:false,
+  // Моё слово и угадывания соперником по нему
+  myWord:'', myRev:[],
+  // Слово соперника и мои угадывания
+  oppWord:'', oppRev:[],
+  // Мой счёт ошибок (по моему слову — их насчитал соперник)
+  myWrong:0,
+  // Счёт ошибок соперника (по его слову — их насчитал я)
+  oppWrong:0,
+  // Чей ход: 1 = мой, 2 = соперника
+  myTurn:false,
+  // Какие буквы я угадывал по слову соперника
+  guessedMe:new Set(),
+  // Какие буквы соперник угадывал по моему слову (приходит от хоста)
+  guessedOpp:new Set(),
+  me:{name:'Вы'},
+  opp:{name:'Соперник'},
   scene:null,net:null,aiTimer:null,els:{},
 
   init(){
@@ -1025,7 +937,6 @@ const Game={
     const r=new URLSearchParams(location.search).get('room');
     if(r){this.els.jCode.value=r.toUpperCase();this.show('mJoin');}
     else this.show('menu');
-
     this.refreshUI();
   },
 
@@ -1033,7 +944,6 @@ const Game={
     ['menu','mCreate','mWait','mJoin','mWord','mOver'].forEach(m=>this.els[m].classList.add('hide'));
     if(id)this.els[id].classList.remove('hide');
   },
-
   setStatus(s){this.els.status.textContent=s;},
   setNetStatus(text,type){
     if(!this.els.connStatus) return;
@@ -1042,29 +952,36 @@ const Game={
     this.els.connStatus.className='conn-status show '+(type||'');
   },
   setWaitStatus(text,type){
-    const el=this.els.wStatus;
-    if(!el) return;
-    el.textContent=text;
-    el.className='conn-status show '+(type||'wait');
+    const el=this.els.wStatus;if(!el)return;
+    el.textContent=text;el.className='conn-status show '+(type||'wait');
     el.style.cssText='position:static;margin:10px auto';
   },
 
+  // ============ ОТРИСОВКА UI ============
   refreshUI(){
+    // Имена
     this.els.p1n.textContent=this.me.name;
     this.els.p2n.textContent=this.opp.name;
+    // Сердечки: мои ошибки = myWrong, ошибки соперника = oppWrong
     const h=n=>'❤️'.repeat(Math.max(0,5-n))+'🖤'.repeat(Math.min(5,n));
-    this.els.p1s.textContent=h(this.me.wrong);
-    this.els.p2s.textContent=h(this.opp.wrong);
-    this.els.p1i.classList.toggle('active',this.turn===1&&this.phase==='playing');
-    this.els.p2i.classList.toggle('active',this.turn===2&&this.phase==='playing');
-    this.renderWord(this.els.oppWord,this.opp.word,this.opp.revealed,'opp');
-    this.renderWord(this.els.myWord,this.me.word,this.me.revealed,'me');
-    const myTurn=this.turn===1&&this.phase==='playing';
+    this.els.p1s.textContent=h(this.myWrong);
+    this.els.p2s.textContent=h(this.oppWrong);
+    // Активность
+    this.els.p1i.classList.toggle('active',this.myTurn&&this.phase==='playing');
+    this.els.p2i.classList.toggle('active',!this.myTurn&&this.phase==='playing');
+    // Слова
+    // oppWord — слово соперника, угадываю я (oppRev — какие угадал я)
+    this.renderWord(this.els.oppWord,this.oppWord,this.oppRev,'opp');
+    // myWord — моё слово, угадывает соперник (myRev — какие угадал соперник)
+    this.renderWord(this.els.myWord,this.myWord,this.myRev,'me');
+    // Клавиатура: активна когда мой ход и я не угадывал эту букву
     this.els.kbd.querySelectorAll('.key').forEach(k=>{
-      k.disabled=!myTurn||this.guessedMe.has(k.dataset.letter);
+      const L=k.dataset.letter;
+      k.disabled=!(this.myTurn&&this.phase==='playing')||this.guessedMe.has(L);
     });
+    // Индикатор хода
     if(this.phase==='playing'){
-      if(this.turn===1){this.els.turn.textContent='Ваш ход';this.els.turn.classList.remove('opp');}
+      if(this.myTurn){this.els.turn.textContent='Ваш ход';this.els.turn.classList.remove('opp');}
       else{this.els.turn.textContent=this.mode==='ai'?'Ход ИИ':'Ход соперника';this.els.turn.classList.add('opp');}
     } else {
       this.els.turn.textContent='—';this.els.turn.classList.remove('opp');
@@ -1082,27 +999,30 @@ const Game={
     }
   },
 
+  // ============ ИИ ============
   startAI(){
     Snd.init();Snd.click();
-    this.mode='ai';this.myNum=1;this.turn=1;this.phase='waitingWord';
-    this.roomCode=null;this.net.close();
-    this.setNetStatus(null);
-    this.me={name:'Вы',word:'',revealed:[],wrong:0};
-    this.opp={name:'Компьютер',word:'',revealed:[],wrong:0};
-    this.guessedMe=new Set();this.guessedOpp=new Set();
+    this.mode='ai';this.isHost=true;this.phase='waitingWord';
+    this.roomCode=null;this.net.close();this.setNetStatus(null);
+    this.me={name:'Вы'};this.opp={name:'Компьютер'};
+    this.myWord='';this.myRev=[];this.myWrong=0;
+    this.oppWord='';this.oppRev=[];this.oppWrong=0;
+    this.myTurn=true;this.guessedMe=new Set();this.guessedOpp=new Set();
     this.els.rminfo.textContent='Режим: против ИИ';
     if(this.scene)this.scene.reset();
-    this.opp.word=AI_WORDS[Math.floor(Math.random()*AI_WORDS.length)];
-    this.opp.revealed=new Array(this.opp.word.length).fill(false);
+    // ИИ загадывает слово
+    this.oppWord=AI_WORDS[Math.floor(Math.random()*AI_WORDS.length)];
+    this.oppRev=new Array(this.oppWord.length).fill(false);
+    // Спросить у меня слово
     this.els.wordTitle.textContent='Загадайте слово';
     this.els.wordDesc.textContent='Компьютер будет угадывать это слово';
-    this.els.wordIn.value='';
-    this.els.wErr.style.display='none';
+    this.els.wordIn.value='';this.els.wErr.style.display='none';
     this.show('mWord');
     setTimeout(()=>this.els.wordIn.focus(),150);
     this.refreshUI();
   },
 
+  // ============ СОЗДАНИЕ / ПОДКЛЮЧЕНИЕ ============
   createRoom(){
     const name=this.els.cName.value.trim()||'Игрок 1';
     const word=this.els.cWord.value.trim().toUpperCase();
@@ -1110,11 +1030,13 @@ const Game={
     if(word.length<2){this.els.cErr.textContent='Минимум 2 буквы!';this.els.cErr.style.display='block';return;}
 
     Snd.init();Snd.ping();
-    this.mode='online';this.isHost=true;this.myNum=1;this.turn=1;this.phase='waitingOpp';
+    this.mode='online';this.isHost=true;this.phase='waitingOpp';
     this.roomCode=this.genCode();
-    this.me={name,word,revealed:new Array(word.length).fill(false),wrong:0};
-    this.opp={name:'Ожидание...',word:'',revealed:[],wrong:0};
-    this.guessedMe=new Set();this.guessedOpp=new Set();
+    this.me={name};
+    this.opp={name:'Ожидание...'};
+    this.myWord=word;this.myRev=new Array(word.length).fill(false);this.myWrong=0;
+    this.oppWord='';this.oppRev=[];this.oppWrong=0;
+    this.myTurn=true;this.guessedMe=new Set();this.guessedOpp=new Set();
     if(this.scene)this.scene.reset();
 
     this.els.wCode.textContent=this.roomCode;
@@ -1123,23 +1045,20 @@ const Game={
     this.refreshUI();
 
     this.setWaitStatus('Запуск сервера комнаты...','wait');
-    this.net.host(this.roomCode, (msg)=>this.onNetMessage(msg), (text,type)=>{
+    this.net.host(this.roomCode,(msg)=>this.onNetMessage(msg),(text,type)=>{
       this.setWaitStatus(text,type);
       this.setNetStatus(text,type);
     });
   },
 
   cancelRoom(){
-    this.net.close();
-    this.setNetStatus(null);
-    this.roomCode=null;
-    this.toMenu();
+    this.net.close();this.setNetStatus(null);this.roomCode=null;this.toMenu();
   },
 
   copyLink(){
     if(!this.roomCode)return;
     const url=location.origin+location.pathname+'?room='+this.roomCode;
-    const done=()=>{Snd.ping();alert('Ссылка скопирована:\n'+url+'\n\nОтправьте её другу на телефон/компьютер.');};
+    const done=()=>{Snd.ping();alert('Ссылка скопирована:\n'+url);};
     if(navigator.clipboard)navigator.clipboard.writeText(url).then(done).catch(()=>prompt('Скопируйте:',url));
     else prompt('Скопируйте:',url);
   },
@@ -1150,11 +1069,12 @@ const Game={
     if(!code){this.els.jErr.textContent='Введите код!';this.els.jErr.style.display='block';return;}
 
     Snd.init();Snd.ping();
-    this.mode='online';this.isHost=false;this.myNum=2;this.turn=1;this.phase='waitingOpp';
+    this.mode='online';this.isHost=false;this.phase='waitingOpp';
     this.roomCode=code;
-    this.me={name,word:'',revealed:[],wrong:0};
-    this.opp={name:'Хост',word:'',revealed:[],wrong:0};
-    this.guessedMe=new Set();this.guessedOpp=new Set();
+    this.me={name};this.opp={name:'Хост'};
+    this.myWord='';this.myRev=[];this.myWrong=0;
+    this.oppWord='';this.oppRev=[];this.oppWrong=0;
+    this.myTurn=false;this.guessedMe=new Set();this.guessedOpp=new Set();
     if(this.scene)this.scene.reset();
 
     this.els.rminfo.textContent='Код: '+code;
@@ -1162,23 +1082,28 @@ const Game={
     this.setStatus('Подключение к комнате...');
     this.setNetStatus('Подключение...','wait');
 
-    this.net.join(this.roomCode, (msg)=>this.onNetMessage(msg), (text,type)=>{
+    this.net.join(this.roomCode,(msg)=>this.onNetMessage(msg),(text,type)=>{
       this.setNetStatus(text,type);
-      if(type==='err') this.setStatus(text);
+      if(type==='err')this.setStatus(text);
     });
   },
 
+  // ============ ОБРАБОТКА СЕТЕВЫХ СООБЩЕНИЙ ============
+  // Протокол:
+  //  guest → host: __hello             (гость подключился)
+  //  host  → guest: state              (полное состояние игры)
+  //  guest → host: word {word,name}    (гость загадал слово)
+  //  guest → host: guess {letter}      (гость угадывает в слове хоста)
+  //  guest → host: restart
+  //
+  // Хост после каждого изменения рассылает state.
   onNetMessage(msg){
     if(!msg||!msg.type)return;
     const t=msg.type;
 
-    // Гость присоединился → хост отправляет своё слово и просит слово гостя
-    if(t==='__hello'){
-      if(this.isHost&&this.phase==='waitingOpp'){
-        // Хост отправляет своё слово гостю
-        this.net.send({type:'word',word:this.me.word,name:this.me.name});
-        // Просит гостя загадать слово
-        this.net.send({type:'ask-word'});
+    if(this.isHost){
+      // -------- ХОСТ принимает от гостя --------
+      if(t==='__hello'){
         this.opp.name='Соперник';
         this.refreshUI();
         this.setStatus('Соперник подключился!');
@@ -1187,137 +1112,360 @@ const Game={
         this.setNetStatus('Подключено','ok');
         this.els.wordTitle.textContent='Ожидание слова соперника';
         this.show(null);
+        // Отправляем гостю начальное состояние
+        this.sendState();
+        return;
       }
-      return;
-    }
-
-    if(t==='word'){
-      this.opp.name=msg.name||this.opp.name;
-      this.opp.word=msg.word;
-      this.opp.revealed=new Array(msg.word.length).fill(false);
-      this.refreshUI();
-      this.checkReady();
-      return;
-    }
-
-    if(t==='ask-word'){
-      if(!this.isHost&&this.phase==='waitingOpp'){
-        this.els.wordTitle.textContent='Загадайте слово';
-        this.els.wordDesc.textContent='Хост будет угадывать это слово';
-        this.els.wordIn.value='';
-        this.els.wErr.style.display='none';
-        this.show('mWord');
-        setTimeout(()=>this.els.wordIn.focus(),150);
+      if(t==='word'){
+        this.opp.name=msg.name||this.opp.name;
+        this.oppWord=msg.word;
+        this.oppRev=new Array(msg.word.length).fill(false);
+        this.guessedMe=new Set(); // гость ещё не угадывал
+        this.refreshUI();
+        this.checkStart();
+        return;
       }
-      return;
+      if(t==='guess'){
+        this.handleGuestGuess(msg.letter);
+        return;
+      }
+      if(t==='restart'){
+        this.toMenu();
+        return;
+      }
+    } else {
+      // -------- ГОСТЬ принимает от хоста --------
+      if(t==='state'){
+        this.applyState(msg);
+        return;
+      }
+      if(t==='gameover'){
+        this.phase='ended';
+        this.showResult(msg.winnerName,msg.loserName);
+        return;
+      }
+      if(t==='restart'){
+        this.toMenu();
+        return;
+      }
     }
-
-    if(t==='guess'){this.oppGuess(msg.letter);return;}
-    if(t==='turn'){this.turn=msg.turn;this.refreshUI();return;}
-    if(t==='gameover'){this.phase='ended';this.showResult(msg.winnerName,msg.loserName);return;}
-    if(t==='restart'){this.toMenu();return;}
   },
 
-  checkReady(){
-    if(this.me.word&&this.opp.word&&(this.phase==='waitingOpp'||this.phase==='waitingWord')){
-      this.startPlaying();
+  // ---------- ХОСТ: рассылка состояния ----------
+  sendState(){
+    if(!this.isHost||this.mode!=='online') return;
+    this.net.send({
+      type:'state',
+      // Слово хоста (гость его угадывает) + какие угадал гость
+      hostWord:this.myWord,
+      hostRev:this.myRev,
+      // Слово гостя (хост его угадывает) + какие угадал хост
+      guestWord:this.oppWord,
+      guestRev:this.oppRev,
+      // Счёт: сколько ошибок у каждого (по ЕГО слову)
+      hostWrong:this.myWrong,     // ошибки хоста = ошибки по слову гостя
+      guestWrong:this.oppWrong,   // ошибки гостя = ошибки по слову хоста
+      // Чей ход
+      turn:this.myTurn?1:2,
+      // Угаданные буквы
+      hostGuessed:[...this.guessedOpp], // что хост угадывал в слове гостя
+      guestGuessed:[...this.guessedMe], // что гость угадывал в слове хоста
+      hostName:this.me.name,
+      guestName:this.opp.name,
+      phase:this.phase
+    });
+  },
+
+  // ---------- ГОСТЬ: применить состояние ----------
+  applyState(s){
+    // Для гостя: "моё слово" = guestWord (его загадал гость)
+    //           "слово соперника" = hostWord (его загадал хост)
+    const prevMyRev=this.myRev.join('');
+    const prevOppRev=this.oppRev.join('');
+    const prevMyWrong=this.myWrong;
+    const prevOppWrong=this.oppWrong;
+
+    this.opp.name=s.hostName||'Хост';
+    this.me.name=s.guestName||this.me.name;
+
+    // Моё слово — то, что загадал гость
+    this.myWord=s.guestWord||this.myWord;
+    this.myRev=s.guestRev||[];
+    this.myWrong=s.guestWrong||0;
+
+    // Слово соперника — то, что загадал хост
+    this.oppWord=s.hostWord||'';
+    this.oppRev=s.hostRev||[];
+    this.oppWrong=s.hostWrong||0;
+
+    // Мой ход — если turn==2
+    this.myTurn=(s.turn===2);
+    this.phase=s.phase||this.phase;
+
+    // Обновляем множества угаданных букв
+    this.guessedOpp=new Set(s.guestGuessed||[]); // что гость угадывал (соперник в моём слове? нет)
+    // Внимание: для гостя "соперник" = хост. Хост угадывает в МОЁМ слове (guestWord).
+    // Значит guessedOpp у гостя — это что ХОСТ угадывал в слове гостя.
+    this.guessedOpp=new Set(s.hostGuessed||[]);
+    // А guessedMe у гостя — что Я угадывал в слове хоста (hostWord).
+    this.guessedMe=new Set(s.guestGuessed||[]);
+
+    // UI-обновление
+    if(this.myWord&&this.myRev.length!==this.myWord.length){
+      this.myRev=new Array(this.myWord.length).fill(false);
+    }
+    if(this.oppWord&&this.oppRev.length!==this.oppWord.length){
+      this.oppRev=new Array(this.oppWord.length).fill(false);
+    }
+
+    // Звуки
+    if(prevMyRev!==this.myRev.join('')&&this.myWrong===prevMyWrong){
+      Snd.ok();
+    }
+    if(this.myWrong>prevMyWrong){
+      Snd.no();Snd.step(this.myWrong-1);
+      if(this.scene)this.scene.setStep('left',this.myWrong);
+    }
+    if(this.oppWrong>prevOppWrong){
+      Snd.no();
+      if(this.scene)this.scene.setStep('right',this.oppWrong);
+    }
+    if(prevOppRev!==this.oppRev.join('')&&this.oppWrong===prevOppWrong){
+      Snd.ok();
+    }
+
+    // Статус
+    if(this.phase==='playing'){
+      if(this.myTurn) this.setStatus('Ваш ход! Угадайте букву в слове соперника');
+      else this.setStatus('Ход соперника...');
+    } else if(this.phase==='ended'){
+      // обработка gameover
+    }
+
+    // Кнопки клавиатуры: подсветка
+    this.els.kbd.querySelectorAll('.key').forEach(k=>{
+      const L=k.dataset.letter;
+      k.classList.remove('ok','no');
+      if(this.guessedMe.has(L)){
+        // я угадывал эту букву в слове хоста
+        k.classList.add(this.oppWord.includes(L)?'ok':'no');
+      }
+    });
+
+    this.refreshUI();
+
+    // Проверка конца игры
+    if(this.phase==='playing'){
+      if(this.myRev.length&&this.myRev.every(r=>r)){
+        // Моё слово полностью угадано хостом → я проиграл
+        this.phase='ended';
+        this.showResult(this.opp.name,this.me.name);
+        return;
+      }
+      if(this.oppRev.length&&this.oppRev.every(r=>r)){
+        // Слово хоста угадано мной → я выиграл
+        this.phase='ended';
+        this.showResult(this.me.name,this.opp.name);
+        return;
+      }
+    }
+    if(this.myWrong>=5){this.phase='ended';this.showResult(this.opp.name,this.me.name);return;}
+    if(this.oppWrong>=5){this.phase='ended';this.showResult(this.me.name,this.opp.name);return;}
+  },
+
+  // ---------- ХОСТ: обработка догадки гостя ----------
+  // Гость угадывает в СЛОВЕ ХОСТА (this.myWord)
+  handleGuestGuess(letter){
+    if(this.phase!=='playing')return;
+    if(this.myTurn)return; // сейчас не ход гостя
+    if(this.guessedMe.has(letter))return;
+
+    this.guessedMe.add(letter);
+    let found=false;
+    for(let i=0;i<this.myWord.length;i++){
+      if(this.myWord[i]===letter){this.myRev[i]=true;found=true;}
+    }
+
+    if(found){
+      // Гость угадал — ход остаётся у гостя
+      // Проверим победу гостя
+      if(this.myRev.every(r=>r)){
+        // Моё слово полностью разгадано — я проиграл
+        this.phase='ended';
+        this.sendState();
+        this.net.send({type:'gameover',winnerName:this.opp.name,loserName:this.me.name});
+        setTimeout(()=>this.showResult(this.opp.name,this.me.name),400);
+        return;
+      }
+    } else {
+      // Гость ошибся — его счёт ошибок растёт (guestWrong = my ошибки в слове хоста)
+      // ВАЖНО: myWrong — это счёт ошибок ХОСТА, но у нас счёт ошибок гостя — oppWrong
+      // Вспоминаем: hostWrong = myWrong = ошибки хоста (в слове гостя)
+      //            guestWrong = oppWrong = ошибки гостя (в слове хоста)
+      // Гость ошибся в слове хоста → oppWrong++
+      this.oppWrong++;
+      if(this.oppWrong>=5){
+        this.phase='ended';
+        this.sendState();
+        this.net.send({type:'gameover',winnerName:this.me.name,loserName:this.opp.name});
+        setTimeout(()=>this.showResult(this.me.name,this.opp.name),400);
+        return;
+      }
+      // Ход переходит к хосту
+      this.myTurn=true;
+    }
+
+    // Рассылаем состояние
+    this.sendState();
+    // У себя обновляем
+    this.refreshUI();
+    if(this.scene&&this.oppWrong>0)this.scene.setStep('right',this.oppWrong);
+    if(found){
+      Snd.ok();
+      if(!this.myRev.every(r=>r)===false){}
+      this.setStatus('Соперник угадал букву "'+letter+'"');
+    } else {
+      Snd.no();Snd.step(this.oppWrong-1);
+      this.setStatus('Соперник не угадал букву "'+letter+'" — ваш ход!');
+      if(this.scene)this.scene.setStep('right',this.oppWrong);
+    }
+    if(!this.myTurn){
+      // ход остался у гостя, ждём следующую букву
     }
   },
 
+  // ---------- ОТПРАВКА СЛОВА ----------
   submitWord(){
     const val=this.els.wordIn.value.trim().toUpperCase();
     if(!val||!/^[А-ЯЁ]+$/.test(val)){this.els.wErr.textContent='Только русские буквы!';this.els.wErr.style.display='block';return;}
     if(val.length<2){this.els.wErr.textContent='Минимум 2 буквы!';this.els.wErr.style.display='block';return;}
 
     Snd.ping();
-    this.me.word=val;
-    this.me.revealed=new Array(val.length).fill(false);
+    this.myWord=val;
+    this.myRev=new Array(val.length).fill(false);
     this.show(null);
 
-    if(this.mode==='ai'){this.startPlaying();return;}
-
+    if(this.mode==='ai'){
+      // Против ИИ: всё готово, начинаем
+      this.startAIPlaying();
+      return;
+    }
+    if(this.isHost){
+      // Хост уже ввёл слово при создании комнаты — сюда не должен попадать
+      this.checkStart();
+      return;
+    }
+    // Гость — отправляем слово хосту
     this.net.send({type:'word',word:val,name:this.me.name});
-    this.setStatus('Слово принято. Ожидание соперника...');
-    this.checkReady();
+    this.setStatus('Слово принято. Ожидание хоста...');
+    this.els.rminfo.textContent='Код: '+this.roomCode+' — ждём хоста';
   },
 
-  startPlaying(){
+  // ---------- СТАРТ ИГРЫ (хост) ----------
+  checkStart(){
+    if(!this.myWord||!this.oppWord)return;
     if(this.phase==='playing')return;
     this.phase='playing';
-    if(this.isHost){this.turn=1;this.setStatus('Ваш ход! Угадайте букву в слове соперника');}
-    else{this.turn=2;this.setStatus('Ход соперника...');}
-    if(this.mode==='online')this.net.send({type:'turn',turn:1});
+    this.myTurn=true; // Хост ходит первым
+    this.sendState();
+    this.setStatus('Ваш ход! Угадайте букву в слове соперника');
     this.refreshUI();
   },
 
+  // ---------- СТАРТ ИГРЫ ПРОТИВ ИИ ----------
+  startAIPlaying(){
+    this.phase='playing';
+    this.myTurn=true;
+    this.setStatus('Ваш ход! Угадайте букву в слове компьютера');
+    this.refreshUI();
+  },
+
+  // ---------- ХОД ХОСТА ИЛИ ИГРОКА В РЕЖИМЕ ИИ ----------
   onLetter(letter){
     if(this.phase!=='playing')return;
-    if(this.turn!==1)return;
+    if(!this.myTurn)return;
     if(this.guessedMe.has(letter))return;
-    if(!this.opp.word)return;
+    if(!this.oppWord)return;
     Snd.init();
+
+    // Гость: отправляем хосту guess, хост сам обработает
+    if(this.mode==='online'&&!this.isHost){
+      this.guessedMe.add(letter);
+      // Визуально подсветим сразу
+      const key=this.els.kbd.querySelector('[data-letter="'+letter+'"]');
+      // Локально проверим попадание, чтобы дать мгновенную обратную связь
+      const inWord=this.oppWord.includes(letter);
+      if(key)key.classList.add(inWord?'ok':'no');
+      this.net.send({type:'guess',letter});
+      // Отправим — но UI ждёт state от хоста. Не меняем счёт/ход локально.
+      this.setStatus('Проверяем букву "'+letter+'"...');
+      return;
+    }
+
+    // Хост или ИИ — обрабатываем локально
     this.guessedMe.add(letter);
     const key=this.els.kbd.querySelector('[data-letter="'+letter+'"]');
     let found=false;
-    for(let i=0;i<this.opp.word.length;i++){
-      if(this.opp.word[i]===letter){this.opp.revealed[i]=true;found=true;}
+    for(let i=0;i<this.oppWord.length;i++){
+      if(this.oppWord[i]===letter){this.oppRev[i]=true;found=true;}
     }
+
     if(found){
       Snd.ok();
       if(key)key.classList.add('ok');
       this.setStatus('✅ Буква "'+letter+'" есть в слове соперника!');
-      if(this.mode==='online')this.net.send({type:'guess',letter,by:this.myNum});
       this.refreshUI();
-      if(this.opp.revealed.every(r=>r)){this.gameOver(this.me.name,this.opp.name,'win');return;}
+      if(this.oppRev.every(r=>r)){
+        // Я победил — слово соперника разгадано
+        this.gameOverHost(this.me.name,this.opp.name);
+        return;
+      }
+      // Ход остаётся моим
+      if(this.isHost)this.sendState();
     } else {
       Snd.no();
       if(key)key.classList.add('no');
-      this.me.wrong++;
-      this.setStatus('❌ Буквы "'+letter+'" нет! ('+this.me.wrong+'/5)');
-      if(this.mode==='online')this.net.send({type:'guess',letter,by:this.myNum});
-      if(this.scene)this.scene.setStep('left',this.me.wrong);
-      Snd.step(this.me.wrong-1);
+      this.myWrong++;
+      this.setStatus('❌ Буквы "'+letter+'" нет! ('+this.myWrong+'/5)');
+      if(this.scene)this.scene.setStep('left',this.myWrong);
+      Snd.step(this.myWrong-1);
       this.refreshUI();
-      if(this.me.wrong>=5){this.gameOver(this.opp.name,this.me.name,'lose');return;}
-      this.turn=2;
+      if(this.myWrong>=5){
+        this.gameOverHost(this.opp.name,this.me.name);
+        return;
+      }
+      // Ход переходит
+      this.myTurn=false;
+      if(this.isHost)this.sendState();
       this.refreshUI();
-      if(this.mode==='online')this.net.send({type:'turn',turn:2});
-      if(this.mode==='ai'){this.setStatus('Ход компьютера...');this.aiTurn();}
-      else this.setStatus('Ход соперника...');
+      if(this.mode==='ai'){
+        this.setStatus('Ход компьютера...');
+        this.aiTurn();
+      } else {
+        this.setStatus('Ход соперника...');
+      }
     }
   },
 
-  oppGuess(letter){
-    if(this.phase!=='playing')return;
-    this.guessedOpp.add(letter);
-    let found=false;
-    for(let i=0;i<this.me.word.length;i++){
-      if(this.me.word[i]===letter){this.me.revealed[i]=true;found=true;}
+  gameOverHost(winnerName,loserName){
+    this.phase='ended';
+    if(this.aiTimer){clearTimeout(this.aiTimer);this.aiTimer=null;}
+    if(this.isHost&&this.mode==='online'){
+      this.sendState();
+      this.net.send({type:'gameover',winnerName,loserName});
     }
-    if(found){
-      Snd.ok();
-      this.setStatus('Соперник угадал букву "'+letter+'"');
-      this.refreshUI();
-      if(this.me.revealed.every(r=>r)){this.gameOver(this.opp.name,this.me.name,'lose');}
-    } else {
-      this.opp.wrong++;
-      Snd.no();
-      this.setStatus('Соперник не угадал букву "'+letter+'"!');
-      if(this.scene)this.scene.setStep('right',this.opp.wrong);
-      this.refreshUI();
-      if(this.opp.wrong>=5){this.gameOver(this.me.name,this.opp.name,'win');return;}
-      this.turn=1;
-      this.refreshUI();
-      this.setStatus('Ваш ход! Угадайте букву в слове соперника');
-    }
+    if(winnerName===this.me.name)setTimeout(()=>Snd.win(),200);
+    else setTimeout(()=>Snd.lose(),200);
+    setTimeout(()=>this.showResult(winnerName,loserName),1200);
   },
 
+  // ---------- ИИ ----------
   aiTurn(){
-    if(this.phase!=='playing'||this.turn!==2||this.mode!=='ai')return;
+    if(this.phase!=='playing'||this.myTurn||this.mode!=='ai')return;
     if(this.aiTimer)clearTimeout(this.aiTimer);
     this.aiTimer=setTimeout(()=>{
-      if(this.phase!=='playing'||this.turn!==2||this.mode!=='ai')return;
-      const word=this.me.word;
+      if(this.phase!=='playing'||this.myTurn||this.mode!=='ai')return;
+      const word=this.myWord;
       const guessed=this.guessedOpp;
       const uniq=[...new Set(word.split('').filter(l=>!guessed.has(l)))];
       const avail=LETTERS.filter(l=>!guessed.has(l));
@@ -1325,37 +1473,38 @@ const Game={
       let choice;
       if(uniq.length>0&&Math.random()<0.4)choice=uniq[Math.floor(Math.random()*uniq.length)];
       else choice=avail[Math.floor(Math.random()*avail.length)];
+
       this.guessedOpp.add(choice);
       let found=false;
-      for(let i=0;i<word.length;i++){if(word[i]===choice){this.me.revealed[i]=true;found=true;}}
+      for(let i=0;i<word.length;i++){
+        if(word[i]===choice){this.myRev[i]=true;found=true;}
+      }
       if(found){
         Snd.ok();
         this.setStatus('Компьютер угадал букву "'+choice+'"');
         this.refreshUI();
-        if(this.me.revealed.every(r=>r)){this.gameOver(this.opp.name,this.me.name,'lose');return;}
-        this.turn=2;
+        if(this.myRev.every(r=>r)){
+          // Компьютер разгадал моё слово — я проиграл
+          this.gameOverHost(this.opp.name,this.me.name);
+          return;
+        }
+        // ИИ продолжает
         this.aiTurn();
       } else {
-        this.opp.wrong++;
+        this.oppWrong++;
         Snd.no();
         this.setStatus('Компьютер не угадал букву "'+choice+'"');
-        if(this.scene)this.scene.setStep('right',this.opp.wrong);
+        if(this.scene)this.scene.setStep('right',this.oppWrong);
         this.refreshUI();
-        if(this.opp.wrong>=5){this.gameOver(this.me.name,this.opp.name,'win');return;}
-        this.turn=1;
+        if(this.oppWrong>=5){
+          this.gameOverHost(this.me.name,this.opp.name);
+          return;
+        }
+        this.myTurn=true;
         this.refreshUI();
         this.setStatus('Ваш ход! Угадайте букву в слове компьютера');
       }
     },1100+Math.random()*700);
-  },
-
-  gameOver(winnerName,loserName,result){
-    this.phase='ended';
-    if(this.aiTimer){clearTimeout(this.aiTimer);this.aiTimer=null;}
-    if(result==='win')setTimeout(()=>Snd.win(),200);
-    else setTimeout(()=>Snd.lose(),200);
-    if(this.mode==='online')this.net.send({type:'gameover',winnerName,loserName,result});
-    setTimeout(()=>this.showResult(winnerName,loserName),1600);
   },
 
   showResult(w,l){
@@ -1367,19 +1516,18 @@ const Game={
 
   restart(){
     Snd.click();
-    if(this.mode==='online')this.net.send({type:'restart'});
+    if(this.mode==='online'&&this.net)this.net.send({type:'restart'});
     this.toMenu();
   },
 
   toMenu(){
     if(this.aiTimer){clearTimeout(this.aiTimer);this.aiTimer=null;}
-    this.net.close();
-    this.setNetStatus(null);
+    this.net.close();this.setNetStatus(null);
     this.mode='menu';this.phase='menu';this.roomCode=null;
-    this.me={name:'Вы',word:'',revealed:[],wrong:0};
-    this.opp={name:'Соперник',word:'',revealed:[],wrong:0};
-    this.guessedMe=new Set();this.guessedOpp=new Set();
-    this.turn=1;
+    this.me={name:'Вы'};this.opp={name:'Соперник'};
+    this.myWord='';this.myRev=[];this.myWrong=0;
+    this.oppWord='';this.oppRev=[];this.oppWrong=0;
+    this.myTurn=true;this.guessedMe=new Set();this.guessedOpp=new Set();
     this.els.rminfo.textContent='';
     if(this.scene)this.scene.reset();
     this.els.kbd.querySelectorAll('.key').forEach(k=>{k.disabled=false;k.classList.remove('ok','no')});
